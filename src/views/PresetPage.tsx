@@ -12,26 +12,18 @@ const PresetPage=(props:any)=>{
             const editorInstance:any = props.editInstance
                 .init({
                 container: '#gjs-preset',
-                components: '<div class="txt-red">Hello world!</div>',
-                style: '.txt-red{color: red}',
-                    plugins: [presetPlugin],
-                    // pluginsOpts: {
-                    //     [presetPlugin]: { /* options */ }
-                    // }
-                    // or
-                    // plugins: [
-                    //     editor => presetPlugin(editor, { /* options */ }),
-                    // ],
+                plugins: [presetPlugin],
             });
             setEditor(editorInstance)
         }
-    }
+    };
 
     useEffect(()=>{
         renderGrape()
-    },[renderGrape])
+    },[renderGrape]);
 
     return (
+
         <div id={'gjs-preset'} style={{
             width:'800px',
             height:'800px'
@@ -39,7 +31,7 @@ const PresetPage=(props:any)=>{
              ref={(ref:any)=>{
                  setDomRef(ref)
              }}
-        ></div>
+        />
 
     )
 }

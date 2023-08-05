@@ -26,5 +26,6 @@ export default (editor: Editor, config: RequiredPluginOptions) => {
     run: ed => ed.setDevice('Mobile portrait'),
     stop: () => {},
   });
-  Commands.add(cmdClear, (e: Editor) => confirm(txtConfirm) && e.runCommand('core:canvas-clear'));
+  // Commands.add(cmdClear, (e: Editor) => confirm(txtConfirm) && e.runCommand('core:canvas-clear'));
+  Commands.add(cmdClear, (e: Editor) =>  e.runCommand('core:canvas-clear'));
 }
