@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { Editor } from 'grapesjs';
 import { cmdGetMjml, cmdGetMjmlToHtml } from '.';
 import { RequiredPluginOptions } from '..';

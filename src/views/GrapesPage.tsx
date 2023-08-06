@@ -1,22 +1,25 @@
-import { useEffect, useState } from 'react'
-const GrapesPage=(props:any)=>{
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+const GrapesPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
 
-    const renderGrape = () => {
-        if(domRef&&!editor){
-            // @ts-ignore
-            const editorInstance:any = props.editInstance
-                .init({
-                    container: '#gjs-grapes',
-                });
-            setEditor(editorInstance)
-        }
-    }
-
     useEffect(()=>{
-        renderGrape()
-    },[renderGrape])
+        console.log('ref',ref)
+
+        // @ts-ignore
+        const editorInstance:any = props.editInstance
+            .init({
+                container: '#gjs-grapes',
+            });
+        setEditor(editorInstance)
+    },[])
+    const getHtml=()=>{
+        // @ts-ignore
+        return editor.getHtml()
+    }
+    useImperativeHandle(ref, () => ({
+        getHtml:getHtml
+    }))
 
     return (
 
@@ -32,4 +35,4 @@ const GrapesPage=(props:any)=>{
     )
 };
 
-export default GrapesPage
+export default forwardRef(GrapesPage);

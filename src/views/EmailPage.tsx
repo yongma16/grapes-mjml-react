@@ -1,8 +1,8 @@
 import grapesJSMJML  from '../components/email-edit/index'
-import { useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 
 
-const EmailPage=(props:any)=>{
+const EmailPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
     const [mjmlTemplate,setMjmlTemplate]=useState(`<mjml>
@@ -12,16 +12,25 @@ const EmailPage=(props:any)=>{
                                     </mj-body>
                                   </mjml>`)
     useEffect(()=>{
+        console.log('ref',ref)
         const editorInstance:any = props.editInstance
             .init({
                 fromElement: true,
                 container: '#gjs-email',
                 plugins: [grapesJSMJML ],
             });
-        // editorInstance.addComponents(mjmlTemplate);
-        console.log('getHtml',editorInstance.getHtml())
+        editorInstance.addComponents(mjmlTemplate);
         setEditor(editorInstance)
     },[])
+
+    const getHtml=()=>{
+        // @ts-ignore
+        return editor.getHtml()
+    }
+
+    useImperativeHandle(ref, () => ({
+        getHtml:getHtml
+    }))
 
     return (
         <div id={'gjs-email'} style={{
@@ -36,4 +45,4 @@ const EmailPage=(props:any)=>{
     )
 }
 
-export default EmailPage
+export default forwardRef(EmailPage);

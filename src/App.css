@@ -16,9 +16,9 @@
 .App-header {
   background-color: #282c34;
   height: 80px;
-  line-height: 80px;
-  text-align: center;
   color: #fff;
+  display: flex;
+  line-height: 80px;
 }
 
 .App-link {

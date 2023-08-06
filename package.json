@@ -10,6 +10,7 @@
     "@types/node": "^16.18.39",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
+    "axios": "^1.4.0",
     "grapesjs": "^0.21.3",
     "grapesjs-mjml": "^0.4.1",
     "react": "^18.2.0",
@@ -41,5 +42,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:6677"
 }

@@ -1,26 +1,28 @@
 import presetPlugin from '../components/preset-edit'
-import { useEffect, useState } from 'react'
-const PresetPage=(props:any)=>{
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+const PresetPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
 
 
 
-    const renderGrape = () => {
-        if(domRef&&!editor){
-            // @ts-ignore
-            const editorInstance:any = props.editInstance
-                .init({
+    useEffect(()=>{
+        console.log('ref',ref)
+
+        const editorInstance:any = props.editInstance
+            .init({
                 container: '#gjs-preset',
                 plugins: [presetPlugin],
             });
-            setEditor(editorInstance)
-        }
-    };
-
-    useEffect(()=>{
-        renderGrape()
-    },[renderGrape]);
+        setEditor(editorInstance)
+    },[]);
+    const getHtml=()=>{
+        // @ts-ignore
+        return editor.getHtml()
+    }
+    useImperativeHandle(ref, () => ({
+        getHtml:getHtml
+    }))
 
     return (
 
@@ -36,4 +38,4 @@ const PresetPage=(props:any)=>{
     )
 }
 
-export default PresetPage
+export default forwardRef(PresetPage);
