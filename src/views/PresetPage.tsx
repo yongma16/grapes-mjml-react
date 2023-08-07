@@ -16,6 +16,11 @@ const PresetPage=(props:any,ref:any)=>{
                 storageManager: false,
                 plugins: [presetPlugin],
             });
+        const cmp = editorInstance.Components;
+        if(cmp){
+            console.log('cmp',cmp)
+            cmp.clear()
+        }
         setEditor(editorInstance)
     },[]);
     const getHtml=()=>{

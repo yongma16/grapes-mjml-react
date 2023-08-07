@@ -16,6 +16,11 @@ const GrapesPage=(props:any,ref:any)=>{
                 // Disable the storage manager for the moment
                 // Avoid any default panel
             });
+        const cmp = editorInstance.Components;
+        if(cmp){
+            console.log('cmp',cmp)
+            cmp.clear()
+        }
         setEditor(editorInstance)
     },[])
     const getHtml=()=>{

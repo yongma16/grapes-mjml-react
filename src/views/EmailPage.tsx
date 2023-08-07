@@ -20,7 +20,12 @@ const EmailPage=(props:any,ref:any)=>{
                 // Disable the storage manager for the moment
                 plugins: [grapesJSMJML ],
             });
-        editorInstance.clearDirtyCount()
+        // const components=editorInstance.getComponents()
+        const cmp = editorInstance.Components;
+        if(cmp){
+            console.log('cmp',cmp)
+            cmp.clear()
+        }
         editorInstance.addComponents(mjmlTemplate);
         setEditor(editorInstance)
     },[])
