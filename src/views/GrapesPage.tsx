@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import grapesjsPresetWebpage from 'grapesjs-preset-webpage'
 const GrapesPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
@@ -10,6 +11,10 @@ const GrapesPage=(props:any,ref:any)=>{
         const editorInstance:any = props.editInstance
             .init({
                 container: '#gjs-grapes',
+                storageManager: false,
+                plugins: [grapesjsPresetWebpage],
+                // Disable the storage manager for the moment
+                // Avoid any default panel
             });
         setEditor(editorInstance)
     },[])

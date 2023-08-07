@@ -1,5 +1,7 @@
 import './App.css';
 import 'grapesjs/dist/css/grapes.min.css';
+import "tea-component/dist/tea.css";
+import { Button ,message,InputAdornment, Input,Segment, Switch, Badge} from "tea-component";
 // @ts-ignore
 import grapesjs from 'grapesjs';
 import { useState,useEffect,useRef } from 'react';
@@ -8,8 +10,10 @@ import EmailPage from './views/EmailPage'
 import GrapesPage from './views/GrapesPage'
 import  {sendEmail} from './service/sendEmailApi'
 
+
 function App() {
   const [editType,setEditType]=useState('mjml');
+  const [emailLoading,setEmailLoading]=useState(false);
   const [emailNumber,setEmailNumber]=useState('1432448610@qq.com');
   const changeEditype=(val:string)=>{
     setEditType(val)
@@ -20,26 +24,46 @@ function App() {
   const presetRef:any=useRef();
 
 
-  const sendEmailAction=()=>{
-      let content=''
-      if(editType==='grapejs'){
-          console.log(grapesRef)
-          content=grapesRef.current.getHtml()
+  const sendEmailAction=async ()=>{
+      setEmailLoading(true)
+      try{
+          let content=''
+          if(editType==='grapejs'){
+              console.log(grapesRef)
+              content=grapesRef.current.getHtml()
+          }
+          else if(editType==='mjml'){
+              console.log(emailRef)
+              content=emailRef.current.getHtml()
+          }
+          else{
+              console.log(presetRef)
+              content=presetRef.current.getHtml()
+          }
+          const data={
+              "toUserEmail":emailNumber,
+              "title":editType,
+              "content":content
+          };
+          const res=await sendEmail(data)
+          if(res&&res.data.code){
+              message.success({
+                  content: res.data.msg,
+              })
+          }
+          else {
+              message.warning({
+                  content: res.data.msg,
+              })
+          }
+          setEmailLoading(false)
       }
-      else if(editType==='mjml'){
-          console.log(emailRef)
-          content=emailRef.current.getHtml()
+      catch (e) {
+          setEmailLoading(false)
+          message.error({
+              content: JSON.stringify(e),
+          })
       }
-      else{
-          console.log(presetRef)
-          content=presetRef.current.getHtml()
-      }
-      const data={
-          "toUserEmail":emailNumber,
-          "title":editType,
-          "content":content
-      };
-      sendEmail(data)
   }
 
   useEffect(()=>{
@@ -51,15 +75,30 @@ function App() {
         <header className="App-header">
           <div style={{width:'50%',textAlign:'left',paddingLeft:'10px'}}>
               grapes web插件 对比
-              <button style={{marginLeft:'20px'}} onClick={()=>changeEditype('grapejs')}>grapejs</button>
-              <button style={{marginLeft:'20px'}} onClick={()=>changeEditype('mjml')}>mjml</button>
-              <button style={{margin:'0 20px'}} onClick={()=>changeEditype('preset')}>preset newsletter</button>
+              <Segment
+                  style={{margin:'0 20px'}}
+                  rimless={false}
+                  value={editType.toString()}
+                  onChange={value => changeEditype(value)}
+                  options={[
+                      { text: "grapejs", value: "grapejs" },
+                      { text: "mjml", value: "mjml" },
+                      { text: "preset", value: "preset" }]}
+              />
+
 
               当前的插件类型：{editType}
           </div>
+            <div style={{minWidth:'150px',fontWeight:'bold',fontSize:'18px'}}>在线编辑邮件</div>
             <div style={{width:'50%',textAlign:'right',paddingRight:'10px'}}>
-                邮箱：<input value={'143248610@qq.com'} placeholder={'请输入邮箱'} onChange={(value:any)=>setEmailNumber(value)}></input>
-                <button style={{marginLeft:'20px'}} onClick={()=>sendEmailAction()}>发送邮件</button>
+                <section>
+                    <InputAdornment before="邮箱：">
+                        <Input  value={'143248610@qq.com'} placeholder={'请输入邮箱'} onChange={(value:any)=>setEmailNumber(value)} />
+                    </InputAdornment>
+                    <Button style={{marginLeft:'20px'}} onClick={()=>sendEmailAction()} type="primary"  loading={emailLoading}>发送邮件</Button>
+                </section>
+
+
             </div>
         </header>
 

@@ -17,8 +17,10 @@ const EmailPage=(props:any,ref:any)=>{
             .init({
                 fromElement: true,
                 container: '#gjs-email',
+                // Disable the storage manager for the moment
                 plugins: [grapesJSMJML ],
             });
+        editorInstance.clearDirtyCount()
         editorInstance.addComponents(mjmlTemplate);
         setEditor(editorInstance)
     },[])

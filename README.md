@@ -44,3 +44,8 @@ $ npm i grapesjs-preset-webpage
 ## 前提条件
 
 grapesjs-mjml 版本<grapejs 版本
+
+## 引入
+```bash
+$ npm install tea-component
+```

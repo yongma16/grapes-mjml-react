@@ -12,6 +12,8 @@ const PresetPage=(props:any,ref:any)=>{
         const editorInstance:any = props.editInstance
             .init({
                 container: '#gjs-preset',
+                // Disable the storage manager for the moment
+                storageManager: false,
                 plugins: [presetPlugin],
             });
         setEditor(editorInstance)
