@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export function sendEmail(params:any){
-    return axios.post('/sendEmail',params)
+    return axios.post('/third-login/sendEmail',params)
 }
