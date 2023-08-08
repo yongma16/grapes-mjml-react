@@ -41,6 +41,10 @@ $ npm i grapesjs-mjml
 $ npm i grapesjs-preset-webpage
 ```
 
+```bash
+$ npm i juice
+```
+
 ## 前提条件
 
 grapesjs-mjml 版本<grapejs 版本

@@ -1,5 +1,6 @@
 // @ts-ignore
 import type { Editor } from 'grapesjs';
+import juice  from 'juice'
 import { RequiredPluginOptions } from '..';
 import { mjmlConvert } from '../components/utils';
 import openExportMjml from './openExportMjml';
@@ -12,6 +13,7 @@ export const cmdImportMjml = 'mjml-import';
 export const cmdExportMjml = 'mjml-export';
 export const cmdGetMjml = 'mjml-code';
 export const cmdGetMjmlToHtml = 'mjml-code-to-html';
+export const cmdGetMjmlToHtmlInline = 'mjml-code-to-html-inline';
 
 export default (editor: Editor, opts: RequiredPluginOptions) => {
   const { Commands } = editor;
@@ -19,6 +21,13 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
 
   Commands.add(cmdGetMjml, () => {
       return `${opts.preMjml}${editor.getHtml().trim()}${opts.postMjml}`;
+  });
+
+  Commands.add(cmdGetMjmlToHtmlInline, (ed, _, opt) => {
+    const mjml = Commands.run(cmdGetMjml);
+    const standHtml=mjmlConvert(mjml, opts.fonts, opt);
+    console.log('standHtml',standHtml)
+    return juice(standHtml.html)
   });
 
   Commands.add(cmdGetMjmlToHtml, (ed, _, opt) => {

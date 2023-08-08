@@ -1,5 +1,6 @@
 import presetPlugin from '../components/preset-edit'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import juice from "./GrapesPage";
 const PresetPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
@@ -25,7 +26,11 @@ const PresetPage=(props:any,ref:any)=>{
     },[]);
     const getHtml=()=>{
         // @ts-ignore
-        return editor.getHtml()
+        const html:any=juice(editor.getHtml())
+        const matchBody=new RegExp('<body[^>]*>([\\s\\S]+?)<\\/body>','ig');
+        const matchBodyText=html.match(matchBody)
+        // @ts-ignore
+        return matchBodyText?matchBodyText[0]:editor.getHtml()
     }
     useImperativeHandle(ref, () => ({
         getHtml:getHtml

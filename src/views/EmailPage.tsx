@@ -7,8 +7,6 @@ const EmailPage=(props:any,ref:any)=>{
     const [domRef,setDomRef]=useState();
     const [mjmlTemplate,setMjmlTemplate]=useState(`<mjml>
                                     <mj-body>
-                                      <mj-section>
-                                      </mj-section>
                                     </mj-body>
                                   </mjml>`)
     useEffect(()=>{
@@ -32,7 +30,11 @@ const EmailPage=(props:any,ref:any)=>{
 
     const getHtml=()=>{
         // @ts-ignore
-        return editor.getHtml()
+        const inlineHtml=editor.Commands.run('mjml-code-to-html-inline')
+        const matchBody=new RegExp('<body[^>]*>([\\s\\S]+?)<\\/body>','ig');
+        const matchBodyText=inlineHtml.match(matchBody)
+        // @ts-ignore
+        return matchBodyText?matchBodyText[0]:''
     }
 
     useImperativeHandle(ref, () => ({
@@ -42,7 +44,7 @@ const EmailPage=(props:any,ref:any)=>{
     return (
         <div id={'gjs-email'} style={{
             width:'800px',
-            height:'800px'
+            height:'calc( 100vh - 80px)'
         }}
              ref={(ref:any)=>{
                  setDomRef(ref)

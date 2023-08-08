@@ -40,6 +40,7 @@ function App() {
               console.log(presetRef)
               content=presetRef.current.getHtml()
           }
+          console.log('content',content)
           const data={
               "toUserEmail":emailNumber,
               "title":editType,
@@ -93,7 +94,7 @@ function App() {
             <div style={{width:'50%',textAlign:'right',paddingRight:'10px'}}>
                 <section>
                     <InputAdornment before="邮箱：">
-                        <Input  value={'143248610@qq.com'} placeholder={'请输入邮箱'} onChange={(value:any)=>setEmailNumber(value)} />
+                        <Input  value={emailNumber} placeholder={'请输入邮箱'} onChange={(value:any)=>setEmailNumber(value)} />
                     </InputAdornment>
                     <Button style={{marginLeft:'20px'}} onClick={()=>sendEmailAction()} type="primary"  loading={emailLoading}>发送邮件</Button>
                 </section>
