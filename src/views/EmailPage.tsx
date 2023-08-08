@@ -7,10 +7,11 @@ const EmailPage=(props:any,ref:any)=>{
     const [domRef,setDomRef]=useState();
     const [mjmlTemplate,setMjmlTemplate]=useState(`<mjml>
                                     <mj-body>
+                                      <mj-section>
+                                      </mj-section>
                                     </mj-body>
                                   </mjml>`)
     useEffect(()=>{
-        console.log('ref',ref)
         const editorInstance:any = props.editInstance
             .init({
                 fromElement: true,
@@ -21,7 +22,6 @@ const EmailPage=(props:any,ref:any)=>{
         // const components=editorInstance.getComponents()
         const cmp = editorInstance.Components;
         if(cmp){
-            console.log('cmp',cmp)
             cmp.clear()
         }
         editorInstance.addComponents(mjmlTemplate);
