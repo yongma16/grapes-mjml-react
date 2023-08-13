@@ -3,6 +3,8 @@ docs:
 
 https://create-react-app.dev/docs
 
+https://grapesjs.com/docs/modules/Components.html#tips
+
 view:
 
 https://yongma16.xyz/react-mjml/
