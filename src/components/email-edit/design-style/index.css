@@ -1,0 +1,6 @@
+.CodeMirror-scroll {
+    text-align: left;
+}
+.design-editor{
+    height: calc( 100% - 80px);
+}

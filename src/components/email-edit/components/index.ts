@@ -47,14 +47,21 @@ export default (editor: Editor, opt: RequiredPluginOptions) => {
       this.listenTo(this, 'change:attributes', this.handleAttributeChange);
     },
 
+    handleChangeEvent(callback:any){
+      console.log('change',callback)
+      return callback
+    },
+
     handleAttributeChange(m: any, v: any, opts: any) {
       this.setStyle(this.get('attributes'), opts);
+      console.log('handleStyleChange')
     },
 
     handleStyleChange(m: any, v: any, opts: any) {
       const style = this.getStyle();
       delete style.__p;
       this.set('attributes', style, opts);
+      console.log('handleStyleChange')
     },
 
 

@@ -25,7 +25,7 @@ function App() {
 
 
   const sendEmailAction=async ()=>{
-      setEmailLoading(true)
+      setEmailLoading(true);
       try{
           let content=''
           if(editType==='grapejs'){
@@ -65,11 +65,11 @@ function App() {
               content: JSON.stringify(e),
           })
       }
-  }
+  };
 
   useEffect(()=>{
       console.log('emailRef',emailRef)
-  },[])
+  },[]);
 
   return (
       <div className="App">
@@ -82,7 +82,6 @@ function App() {
                   value={editType.toString()}
                   onChange={value => changeEditype(value)}
                   options={[
-                      { text: "grapejs", value: "grapejs" },
                       { text: "mjml", value: "mjml" },
                       { text: "preset", value: "preset" }]}
               />
@@ -103,7 +102,7 @@ function App() {
             </div>
         </header>
 
-        {editType==='grapejs'&&<GrapesPage editInstance={grapesjs} ref={grapesRef}></GrapesPage>}
+        {/*{editType==='grapejs'&&<GrapesPage editInstance={grapesjs} ref={grapesRef}></GrapesPage>}*/}
         {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
         ></EmailPage>}
         {editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}

@@ -4,7 +4,9 @@ import loadComponents from './components';
 import loadCommands from './commands';
 import loadPanels from './panels';
 import loadStyle from './style';
-import en from './locale/en';
+import zh from './locale/zh';
+import './design-style/index.css';
+
 
 export type PluginOptions = {
   /**
@@ -206,7 +208,7 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
 
   // @ts-ignore Load i18n files
   editor.I18n.addMessages({
-    en,
+    zh,
     ...opts.i18n,
   });
 
@@ -217,6 +219,15 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     loadPanels,
     loadStyle,
   ].forEach(module => module(editor, opts));
+
+  editor.I18n.addMessages({
+    zh: { // indicate the locale to update
+      styleManager: {
+        ...zh['grapesjs-mjml']['styleManager']
+      }
+    }
+  });
+
 };
 
 export default plugin;

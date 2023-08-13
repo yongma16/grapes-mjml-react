@@ -26,7 +26,6 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
   Commands.add(cmdGetMjmlToHtmlInline, (ed, _, opt) => {
     const mjml = Commands.run(cmdGetMjml);
     const standHtml=mjmlConvert(mjml, opts.fonts, opt);
-    console.log('standHtml',standHtml)
     return juice(standHtml.html)
   });
 

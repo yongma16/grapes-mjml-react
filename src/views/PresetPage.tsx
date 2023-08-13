@@ -8,7 +8,6 @@ const PresetPage=(props:any,ref:any)=>{
 
 
     useEffect(()=>{
-        console.log('ref',ref)
 
         const editorInstance:any = props.editInstance
             .init({
@@ -19,18 +18,13 @@ const PresetPage=(props:any,ref:any)=>{
             });
         const cmp = editorInstance.Components;
         if(cmp){
-            console.log('cmp',cmp)
             cmp.clear()
         }
         setEditor(editorInstance)
     },[]);
     const getHtml=()=>{
         // @ts-ignore
-        const html:any=juice(editor.getHtml())
-        const matchBody=new RegExp('<body[^>]*>([\\s\\S]+?)<\\/body>','ig');
-        const matchBodyText=html.match(matchBody)
-        // @ts-ignore
-        return matchBodyText?matchBodyText[0]:editor.getHtml()
+        return editor.getHtml()
     }
     useImperativeHandle(ref, () => ({
         getHtml:getHtml
@@ -38,10 +32,7 @@ const PresetPage=(props:any,ref:any)=>{
 
     return (
 
-        <div id={'gjs-preset'} style={{
-            width:'800px',
-            height:'800px'
-        }}
+        <div id={'gjs-preset'} className={'design-editor'}
              ref={(ref:any)=>{
                  setDomRef(ref)
              }}
