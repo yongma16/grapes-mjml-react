@@ -5,12 +5,6 @@ import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 const EmailPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
-    const [mjmlTemplate,setMjmlTemplate]=useState(`<mjml>
-                                    <mj-body>
-                                      <mj-section>
-                                      </mj-section>
-                                    </mj-body>
-                                  </mjml>`)
     useEffect(()=>{
         const editorInstance:any = props.editInstance
             .init({
@@ -18,13 +12,12 @@ const EmailPage=(props:any,ref:any)=>{
                 container: '#gjs-email',
                 plugins: [grapesJSMJML ],
             });
-        // const components=editorInstance.getComponents()
-        // @ts-ignore
-        const cmp = editorInstance.Components;
-        cmp.clear()
-        // @ts-ignore
-        editorInstance.clearDirtyCount()
-        editorInstance.addComponents(mjmlTemplate);
+        try{
+            editorInstance.Commands.run('mjml-clear')
+        }
+        catch (e) {
+            console.error('e',e)
+        }
         setEditor(editorInstance)
     },[props.editInstance])
 
