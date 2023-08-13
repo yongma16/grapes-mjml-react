@@ -19,10 +19,14 @@ const EmailPage=(props:any,ref:any)=>{
                 plugins: [grapesJSMJML ],
             });
         // const components=editorInstance.getComponents()
-
+        // @ts-ignore
+        const cmp = editorInstance.Components;
+        cmp.clear()
+        // @ts-ignore
+        editorInstance.clearDirtyCount()
         editorInstance.addComponents(mjmlTemplate);
         setEditor(editorInstance)
-    },[])
+    },[props.editInstance])
 
     const startAnimation=()=>{
         console.log('startAnimation')

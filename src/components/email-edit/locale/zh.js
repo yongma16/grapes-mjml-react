@@ -16,7 +16,7 @@ export default {
                 label: '',
             },
             export: {
-                title: '导出 MJML',
+                title: '对比 MJML html',
             },
         },
         components: {

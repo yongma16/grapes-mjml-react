@@ -28,6 +28,10 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
     const cmp = editor.Components;
     cmp.clear()
     editor.clearDirtyCount()
+    editor.addComponents(`<mjml>
+                                    <mj-body>
+                                    </mj-body>
+                                  </mjml>`)
   });
 
   Commands.add(cmdExportMjml, (ed, _, opt) => {
