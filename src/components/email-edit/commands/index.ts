@@ -10,6 +10,7 @@ export const cmdDeviceDesktop = 'set-device-desktop';
 export const cmdDeviceTablet = 'set-device-tablet';
 export const cmdDeviceMobile = 'set-device-mobile';
 export const cmdImportMjml = 'mjml-import';
+export const cmdClearMjml = 'mjml-clear';
 export const cmdExportMjml = 'mjml-export';
 export const cmdGetMjml = 'mjml-code';
 export const cmdGetMjmlToHtml = 'mjml-code-to-html';
@@ -21,6 +22,12 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
 
   Commands.add(cmdGetMjml, () => {
       return `${opts.preMjml}${editor.getHtml().trim()}${opts.postMjml}`;
+  });
+
+  Commands.add(cmdClearMjml, () => {
+    const cmp = editor.Components;
+    cmp.clear()
+    editor.clearDirtyCount()
   });
 
   Commands.add(cmdExportMjml, (ed, _, opt) => {

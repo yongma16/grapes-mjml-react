@@ -6,7 +6,7 @@ import {
   cmdDeviceMobile,
   cmdDeviceTablet,
   cmdImportMjml,
-  cmdExportMjml
+  cmdExportMjml, cmdClearMjml
 } from './commands';
 
 export default (editor: Editor, opts: RequiredPluginOptions) => {
@@ -16,15 +16,6 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
   const getI18nLabel = (label: string) => editor.I18n.t(`grapesjs-mjml.panels.buttons.${label}`);
 
 
-  // Add Import button
-  Panels.addButton('options', {
-    id: cmdImportMjml,
-    command: cmdImportMjml,
-    attributes: { title: getI18nLabel('import') },
-    label: `<svg ${iconStyle} viewBox="0 0 24 24">
-        <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
-    </svg>`,
-  });
 
 
   // Add Undo/Redo buttons
@@ -78,6 +69,25 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
       }
     ]);
   }
+  // Add export button
+  Panels.addButton('options', {
+    id: cmdClearMjml,
+    command: cmdClearMjml,
+    attributes: { title: getI18nLabel('clear') },
+    label: `清空`,
+  });
+
+
+  // Add Import button
+  Panels.addButton('options', {
+    id: cmdImportMjml,
+    command: cmdImportMjml,
+    attributes: { title: getI18nLabel('import') },
+    label: `导入`,
+    // label: `<svg ${iconStyle} viewBox="0 0 24 24">
+    //     <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+    // </svg>`,
+  });
   // Add export button
   Panels.addButton('options', {
     id: cmdExportMjml,

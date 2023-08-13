@@ -19,10 +19,7 @@ const EmailPage=(props:any,ref:any)=>{
                 plugins: [grapesJSMJML ],
             });
         // const components=editorInstance.getComponents()
-        const cmp = editorInstance.Components;
-        if(cmp){
-            cmp.clear()
-        }
+
         editorInstance.addComponents(mjmlTemplate);
         setEditor(editorInstance)
     },[])

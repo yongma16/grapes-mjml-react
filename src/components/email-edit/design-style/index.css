@@ -1,6 +1,10 @@
 .CodeMirror-scroll {
     text-align: left;
 }
+.gjs-pn-panel{
+    display: block;
+}
+
 .design-editor{
     height: calc( 100% - 80px);
 }
