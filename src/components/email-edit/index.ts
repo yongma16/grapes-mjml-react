@@ -6,7 +6,7 @@ import loadPanels from './panels';
 import loadStyle from './style';
 import zh from './locale/zh';
 import './design-style/index.css';
-
+import assetManager from './asset-manager/assetManager'
 
 export type PluginOptions = {
   /**
@@ -118,6 +118,11 @@ export type PluginOptions = {
    * @default true
    */
   useCustomTheme?: boolean;
+  /**
+   * assetManager
+   * @default true
+   */
+  assetManager?: Object;
 };
 
 export type RequiredPluginOptions = Required<PluginOptions>;
@@ -125,6 +130,7 @@ export type RequiredPluginOptions = Required<PluginOptions>;
 const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
   const opts: RequiredPluginOptions = {
     blocks: [
+      'mj-body',
       'mj-1-column', 'mj-2-columns', 'mj-3-columns', 'mj-text', 'mj-button', 'mj-image', 'mj-divider', 'mj-social-group',
       'mj-social-element', 'mj-spacer', 'mj-navbar', 'mj-navbar-link', 'mj-hero', 'mj-wrapper', 'mj-raw','mj-body','mj-section'
     ],
@@ -144,6 +150,7 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     columnsPadding: '10px 0',
     i18n: {},
     fonts: {},
+    assetManager:{...assetManager},
     // Export 'mjml', 'html' or both (leave empty) TODO
     // exportOnly: '',
     ...opt,

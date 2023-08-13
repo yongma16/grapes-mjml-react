@@ -1,5 +1,4 @@
 import grapesJSMJML  from '../components/email-edit/index'
-import assetManager  from '../components/email-edit/asset-manager/assetManager'
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 
 
@@ -9,20 +8,14 @@ const EmailPage=(props:any,ref:any)=>{
     const [mjmlTemplate,setMjmlTemplate]=useState(`<mjml>
                                     <mj-body>
                                       <mj-section>
-                                      <mj-column>
-                                      </mj-column>
                                       </mj-section>
                                     </mj-body>
                                   </mjml>`)
     useEffect(()=>{
         const editorInstance:any = props.editInstance
             .init({
-                assetManager:{
-                    ...assetManager
-                },
                 fromElement: true,
                 container: '#gjs-email',
-                // Disable the storage manager for the moment
                 plugins: [grapesJSMJML ],
             });
         // const components=editorInstance.getComponents()

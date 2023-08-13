@@ -23,6 +23,25 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
       return `${opts.preMjml}${editor.getHtml().trim()}${opts.postMjml}`;
   });
 
+  Commands.add(cmdExportMjml, (ed, _, opt) => {
+    const mjml = Commands.run(cmdGetMjml);
+    const standHtml=mjmlConvert(mjml, opts.fonts, opt);
+    const resHtml=juice(standHtml.html)
+    const fileName = 'mjml-html文件';
+    const uri = 'data:application/vnd.ms-html;base64,';
+    // 下载
+    const template = resHtml;
+    const downloadLink = document.createElement("a");
+    // 输出base64编码
+    const base64 = (s:any) => window.btoa(unescape(encodeURIComponent(s)));
+    downloadLink.href = uri + base64(template);
+    downloadLink.download = fileName + '.html';
+    downloadLink.target = '_blank';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  });
+
   Commands.add(cmdGetMjmlToHtmlInline, (ed, _, opt) => {
     const mjml = Commands.run(cmdGetMjml);
     const standHtml=mjmlConvert(mjml, opts.fonts, opt);
