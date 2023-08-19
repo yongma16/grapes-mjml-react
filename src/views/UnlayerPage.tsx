@@ -21,20 +21,28 @@ const downHtml=(html:any)=>{
 const UnlayerPage=(props:any,ref:any)=>{
     const emailEditorRef:any = useRef(null);
 
-    const exportHtml = () => {
-        if(!emailEditorRef){
-            return
-        }
-        emailEditorRef.current.editor.exportHtml((data:any) => {
-            const { design, html } = data;
-            console.log('exportHtml', html);
-            return html
-        });
+    const exportHtml = async () => {
+        return new Promise(resolve=>{
+            try{
+                if(!emailEditorRef){
+                    resolve('')
+                }
+                emailEditorRef.current.editor.exportHtml((data:any) => {
+                    const { design, html } = data;
+                    console.log('exportHtml', html);
+                    resolve(html)
+                });
+            }
+            catch(e){
+                resolve(e)
+            }
+        })
     };
 
-    const downHtmlVal=()=>{
+    const downHtmlVal=async ()=>{
         // @ts-ignore
-        downHtml(exportHtml())
+        const html=await exportHtml()
+        downHtml(html)
     }
 
 

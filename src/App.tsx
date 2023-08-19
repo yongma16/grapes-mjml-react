@@ -38,7 +38,7 @@ function App() {
           }
           else if(editType==='unlayer'){
               console.log(unLayerRef)
-              content=unLayerRef.current.getHtml()
+              content=await unLayerRef.current.getHtml()
           }
           else{
               console.log(presetRef)
