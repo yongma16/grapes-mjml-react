@@ -148,7 +148,7 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     useXmlParser: false,
     useCustomTheme: true,
     columnsPadding: '10px 0',
-    i18n: {},
+    i18n: {zh},
     fonts: {},
     assetManager:{...assetManager},
     // Export 'mjml', 'html' or both (leave empty) TODO
@@ -213,12 +213,6 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     document.head.appendChild(style);
   }
 
-  // @ts-ignore Load i18n files
-  editor.I18n.addMessages({
-    zh,
-    ...opts.i18n,
-  });
-
   [
     loadBlocks,
     loadComponents,
@@ -226,15 +220,6 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     loadPanels,
     loadStyle,
   ].forEach(module => module(editor, opts));
-
-  editor.I18n.addMessages({
-    zh: { // indicate the locale to update
-      styleManager: {
-        ...zh['grapesjs-mjml']['styleManager']
-      }
-    }
-  });
-
 };
 
 export default plugin;

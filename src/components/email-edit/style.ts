@@ -7,6 +7,7 @@ export default (editor: Editor, opt: RequiredPluginOptions) => {
   if (opt.resetStyleManager) {
     editor.onReady(() => {
       const sectors = editor.StyleManager.getSectors();
+      console.log('sectors',sectors)
 
       sectors.reset();
       sectors.add([{

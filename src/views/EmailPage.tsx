@@ -1,5 +1,6 @@
 import grapesJSMJML  from '../components/email-edit/index'
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
+import zh from "../components/email-edit/locale/zh";
 
 
 const EmailPage=(props:any,ref:any)=>{
@@ -11,6 +12,27 @@ const EmailPage=(props:any,ref:any)=>{
                 fromElement: true,
                 container: '#gjs-email',
                 plugins: [grapesJSMJML ],
+                i18n: {
+                    // locale: 'en', // default locale
+                    // detectLocale: true, // by default, the editor will detect the language
+                    // localeFallback: 'en', // default fallback
+                    messages: { zh },
+                },
+                assetManager:{
+                    assets:[
+                        {
+                            // You can pass any custom property you want
+                            category: 'logo',
+                            src: 'https://yongma16.xyz/staticFile/common/img/logo.png',
+                        }, {
+                            category: 'c1',
+                            src: 'http://placehold.it/350x250/459ba8/fff/image2.jpg',
+                        }, {
+                            category: 'c2',
+                            src: 'http://placehold.it/350x250/79c267/fff/image3.jpg',
+                        }
+                    ]
+                },
             });
         try{
             editorInstance.Commands.run('mjml-clear')

@@ -1,4 +1,118 @@
 export default {
+    assetManager: {
+        addButton: '添加图片',
+        inputPlh: '图片链接',
+        modalTitle: '选择图片',
+        uploadTitle: '点击上传',
+    },
+    styleManager: {
+        empty: '选择一个元素',
+        layer: '图层',
+        fileButton: '图片',
+        sectors: {
+            general: '常规',
+            layout: '布局',
+            typography: '字体排印',
+            decorations: '装饰',
+            extra: '额外',
+            flex: 'Flex',
+            dimension: '尺寸',
+        },
+        // Default names for sub properties in Composite and Stack types.
+        // Other labels are generated directly from their property names (eg. 'font-size' will be 'Font size').
+        properties: {
+            'color':'颜色',
+            'letter-spacing':'字体间距',
+            'width':'宽',
+            'height':'高',
+            'text-align':'文字对齐',
+            'margin':'外边距',
+            'padding':'内边距',
+            'background':'背景',
+            'background-color':'背景颜色',
+            'background-image':'背景图片',
+            'background-url':'背景图片url',
+            'border':'边框',
+            'align':'对齐',
+            'font-family':'字体样式',
+            'line-height':'行高',
+            'font-weight':'字体 粗细权重',
+            'font-color':'字体颜色',
+            'font-size':'字体大小',
+            'top':'顶部距离',
+            'padding-top':'内边距顶部距离',
+            'left':'左侧距离',
+            'padding-left':'内边距左侧距离',
+            'right':'右侧距离',
+            'padding-right':'内边距右侧距离',
+            'bottom':'底部距离',
+            'padding-bottom':'内边距底部距离',
+            'font-style':'字体样式',
+            'text-decoration':'字体标注（如下划线）',
+            'border-radius':'边框圆角',
+            'border-color':'边框颜色',
+            'border-width-sub': '边框厚度',
+            'border-style-sub': '边框样式',
+            'border-color-sub': '边框颜色',
+            'border-top-left-radius-sub': '边框 Top Left',
+            'border-top-right-radius-sub': '边框 Top Right',
+            'border-bottom-right-radius-sub': '边框 Bottom Right',
+            'border-bottom-left-radius-sub': '边框 Bottom Left',
+            // 'text-shadow-h': 'X',
+            // 'text-shadow-v': 'Y',
+            // 'text-shadow-blur': 'Blur',
+            // 'text-shadow-color': 'Color',
+            // 'box-shadow-h': 'X',
+            // 'box-shadow-v': 'Y',
+            // 'box-shadow-blur': 'Blur',
+            // 'box-shadow-spread': 'Spread',
+            // 'box-shadow-color': 'Color',
+            // 'box-shadow-type': 'Type',
+            // 'margin-top-sub': 'Top',
+            // 'margin-right-sub': 'Right',
+            // 'margin-bottom-sub': 'Bottom',
+            // 'margin-left-sub': 'Left',
+            // 'padding-top-sub': 'Top',
+            // 'padding-right-sub': 'Right',
+            // 'padding-bottom-sub': 'Bottom',
+            // 'padding-left-sub': 'Left',
+            // 'border-width-sub': 'Width',
+            // 'border-style-sub': 'Style',
+            // 'border-color-sub': 'Color',
+            // 'border-top-left-radius-sub': 'Top Left',
+            // 'border-top-right-radius-sub': 'Top Right',
+            // 'border-bottom-right-radius-sub': 'Bottom Right',
+            // 'border-bottom-left-radius-sub': 'Bottom Left',
+            // 'transform-rotate-x': 'Rotate X',
+            // 'transform-rotate-y': 'Rotate Y',
+            // 'transform-rotate-z': 'Rotate Z',
+            // 'transform-scale-x': 'Scale X',
+            // 'transform-scale-y': 'Scale Y',
+            // 'transform-scale-z': 'Scale Z',
+            // 'transition-property-sub': 'Property',
+            // 'transition-duration-sub': 'Duration',
+            // 'transition-timing-function-sub': 'Timing',
+            // 'background-image-sub': 'Image',
+            // 'background-repeat-sub': 'Repeat',
+            // 'background-position-sub': 'Position',
+            // 'background-attachment-sub': 'Attachment',
+            // 'background-size-sub': 'Size',
+        },
+        // Translate options in style properties
+        // options: {
+        //   float: { // Id of the property
+        //     ...
+        //     left: 'Left', // {option id}: {Option label}
+        //   }
+        // }
+    },
+    traitManager: {
+        empty: '选择一个元素 内置属性配置',
+        label: '组件设置',
+    },
+    storageManager: {
+        recover: 'Do you want to recover unsaved changes?',
+    },
     'grapesjs-mjml': {
         category: '',
         panels: {
@@ -56,132 +170,5 @@ export default {
             center:'中间',
 
         }
-        // styleManager:[{
-        //     name: 'Dimension',
-        //     open: false,
-        //     buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding', 'vertical-align'],
-        //     properties: [{
-        //         property: 'margin',
-        //         properties: [
-        //             { name: 'Top', property: 'margin-top' },
-        //             { name: 'Right', property: 'margin-right' },
-        //             { name: 'Bottom', property: 'margin-bottom' },
-        //             { name: 'Left', property: 'margin-left' }
-        //         ],
-        //     }, {
-        //         property: 'padding',
-        //         detached: true,
-        //         properties: [
-        //             { name: 'Top', property: 'padding-top' },
-        //             { name: 'Right', property: 'padding-right' },
-        //             { name: 'Bottom', property: 'padding-bottom' },
-        //             { name: 'Left', property: 'padding-left' }
-        //         ],
-        //     }, {
-        //         property: 'icon-size',
-        //         type: 'integer',
-        //         defaults: '20px',
-        //         units: ['px', '%']
-        //     }, {
-        //         property: 'vertical-align',
-        //         type: 'select',
-        //         list: [
-        //             { value: 'top' },
-        //             { value: 'middle' },
-        //             { value: 'bottom' },
-        //         ]
-        //     }],
-        // }, {
-        //     name: 'Typography',
-        //     open: false,
-        //     buildProps: ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'color', 'line-height', 'text-align', 'align', 'text-decoration', 'font-style'],
-        //     properties: [
-        //         { name: 'Font', property: 'font-family' },
-        //         { name: 'Weight', property: 'font-weight' },
-        //         { name: 'Font color', property: 'color' },
-        //         {
-        //             property: 'text-align',
-        //             type: 'radio',
-        //             defaults: 'left',
-        //             list: [
-        //                 { value: 'left', name: 'Left', className: 'fa fa-align-left' },
-        //                 { value: 'center', name: 'Center', className: 'fa fa-align-center' },
-        //                 { value: 'right', name: 'Right', className: 'fa fa-align-right' },
-        //                 { value: 'justify', name: 'Justify', className: 'fa fa-align-justify' }
-        //             ],
-        //         }, {
-        //             property: 'align',
-        //             type: 'radio',
-        //             defaults: 'left',
-        //             list: [
-        //                 { value: 'left', name: 'Left', className: 'fa fa-align-left' },
-        //                 { value: 'center', name: 'Center', className: 'fa fa-align-center' },
-        //                 { value: 'right', name: 'Right', className: 'fa fa-align-right' },
-        //                 { value: 'justify', name: 'Justify', className: 'fa fa-align-justify' }
-        //             ],
-        //         }, {
-        //             property: 'text-decoration',
-        //             type: 'radio',
-        //             defaults: 'none',
-        //             list: [
-        //                 { value: 'none', name: 'None', className: 'fa fa-times' },
-        //                 { value: 'underline', name: 'underline', className: 'fa fa-underline' },
-        //                 { value: 'line-through', name: 'Line-through', className: 'fa fa-strikethrough' }
-        //             ],
-        //         },{
-        //             property: 'font-style',
-        //             type: 'radio',
-        //             defaults: 'normal',
-        //             list: [
-        //                 { value: 'normal', name: 'Normal', className: 'fa fa-font'},
-        //                 { value: 'italic', name: 'Italic', className: 'fa fa-italic'}
-        //             ],
-        //         }],
-        // }, {
-        //     name: 'Decorations',
-        //     open: false,
-        //     buildProps: ['background-color', 'container-background-color', 'background-url', 'background-repeat',
-        //         'background-size', 'border-radius', 'border'],
-        //     properties: [{
-        //         name: 'Background color',
-        //         property: 'container-background-color',
-        //         type: 'color',
-        //     }, {
-        //         property: 'background-url',
-        //         type: 'file',
-        //     }, {
-        //         property: 'border-radius',
-        //         properties: [
-        //             { name: 'Top', property: 'border-top-left-radius' },
-        //             { name: 'Right', property: 'border-top-right-radius' },
-        //             { name: 'Bottom', property: 'border-bottom-left-radius' },
-        //             { name: 'Left', property: 'border-bottom-right-radius' }
-        //         ],
-        //     }, {
-        //         property: 'border-detached',
-        //         name: 'Border detached',
-        //         type: 'composite',
-        //         detached: true,
-        //         properties: [
-        //             { name: 'Width', property: 'border-width', type: 'integer', units: ['px', '%'] },
-        //             {
-        //                 name: 'Style', property: 'border-style', type: 'select',
-        //                 list: [
-        //                     { value: 'none' },
-        //                     { value: 'solid' },
-        //                     { value: 'dotted' },
-        //                     { value: 'dashed' },
-        //                     { value: 'double' },
-        //                     { value: 'groove' },
-        //                     { value: 'ridge' },
-        //                     { value: 'inset' },
-        //                     { value: 'outset' }
-        //                 ]
-        //             },
-        //             { name: 'Color', property: 'border-color', type: 'color' },
-        //         ],
-        //     }],
-        // },
-        // ]
     },
 };
