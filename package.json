@@ -17,6 +17,7 @@
     "juice": "^9.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-email-editor": "^1.7.8",
     "react-scripts": "5.0.1",
     "tea-component": "^2.7.9",
     "typescript": "^4.9.5",

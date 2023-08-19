@@ -38,7 +38,8 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
     const mjml = Commands.run(cmdGetMjml);
     const standHtml=mjmlConvert(mjml, opts.fonts, opt);
     const resHtml=juice(standHtml.html)
-    const fileName = 'mjml-html文件';
+    let fileName = 'mjml-html文件';
+    fileName = fileName + '_'+(new Date()).valueOf()
     const uri = 'data:application/vnd.ms-html;base64,';
     // 下载
     const template = resHtml;

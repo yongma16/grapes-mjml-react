@@ -16,7 +16,7 @@ export default (editor: Editor, { opt, coreMjmlModel, coreMjmlView, sandboxEl }:
         name: getName(editor, 'column'),
         draggable: componentsToQuery(typeSection),
         stylable: [
-          'background-color', 'vertical-align', 'width',
+          'background-color', 'vertical-align', 'width','height',
           'border-radius', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius',
           'border', 'border-width', 'border-style', 'border-color',
           'padding', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom',

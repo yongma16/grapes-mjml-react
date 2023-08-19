@@ -1,0 +1,60 @@
+// @ts-ignore
+import EmailEditor from 'react-email-editor';
+import { useRef,forwardRef ,useImperativeHandle} from "react";
+import { Button} from "tea-component";
+const downHtml=(html:any)=>{
+    let fileName = 'unlayer-html文件';
+    fileName = fileName + '_'+(new Date()).valueOf()
+    const uri = 'data:application/vnd.ms-html;base64,';
+    // 下载
+    const template = html;
+    const downloadLink = document.createElement("a");
+    // 输出base64编码
+    const base64 = (s:any) => window.btoa(unescape(encodeURIComponent(s)));
+    downloadLink.href = uri + base64(template);
+    downloadLink.download = fileName + '.html';
+    downloadLink.target = '_blank';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+const UnlayerPage=(props:any,ref:any)=>{
+    const emailEditorRef:any = useRef(null);
+
+    const exportHtml = () => {
+        if(!emailEditorRef){
+            return
+        }
+        emailEditorRef.current.editor.exportHtml((data:any) => {
+            const { design, html } = data;
+            console.log('exportHtml', html);
+            return html
+        });
+    };
+
+    const downHtmlVal=()=>{
+        // @ts-ignore
+        downHtml(exportHtml())
+    }
+
+
+    useImperativeHandle(ref, () => ({
+        getHtml:exportHtml
+    }));
+
+    const onReady = () => {
+        // editor is ready
+        // you can load your template here;
+        // const templateJson = {};
+        // emailEditorRef.current.editor.loadDesign(templateJson);
+    };
+    // @ts-ignore
+    return (<>
+        <div style={{position:'relative',textAlign:'right',height:'40px',lineHeight:'40px'}}>
+            <Button onClick={downHtmlVal}>导出 HTML</Button>
+        </div>
+        <EmailEditor ref={emailEditorRef} onReady={onReady} style={{height:'90vh',width:'100vw',}}/>
+    </>)
+};
+
+export default forwardRef(UnlayerPage);

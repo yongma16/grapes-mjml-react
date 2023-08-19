@@ -5,9 +5,8 @@ import { Button ,message,InputAdornment, Input,Segment, Switch, Badge} from "tea
 // @ts-ignore
 import grapesjs from 'grapesjs';
 import { useState,useEffect,useRef } from 'react';
-import PresetPage from './views/PresetPage'
 import EmailPage from './views/EmailPage'
-import GrapesPage from './views/GrapesPage'
+import UnlayerPage from './views/UnlayerPage'
 import  {sendEmail} from './service/sendEmailApi'
 
 
@@ -22,6 +21,7 @@ function App() {
   const emailRef:any=useRef();
   const grapesRef:any=useRef();
   const presetRef:any=useRef();
+  const unLayerRef:any=useRef();
 
 
   const sendEmailAction=async ()=>{
@@ -35,6 +35,10 @@ function App() {
           else if(editType==='mjml'){
               console.log(emailRef)
               content=emailRef.current.getHtml()
+          }
+          else if(editType==='unlayer'){
+              console.log(unLayerRef)
+              content=unLayerRef.current.getHtml()
           }
           else{
               console.log(presetRef)
@@ -75,7 +79,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <div style={{width:'50%',textAlign:'left',paddingLeft:'10px'}}>
-              grapes web插件 对比
+              email web插件 对比
               <Segment
                   style={{margin:'0 20px'}}
                   rimless={false}
@@ -83,7 +87,8 @@ function App() {
                   onChange={value => changeEditype(value)}
                   options={[
                       { text: "mjml", value: "mjml" },
-                      { text: "preset", value: "preset" }]}
+                      { text: "unlayer", value: "unlayer" },
+                  ]}
               />
 
 
@@ -105,7 +110,8 @@ function App() {
         {/*{editType==='grapejs'&&<GrapesPage editInstance={grapesjs} ref={grapesRef}></GrapesPage>}*/}
         {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
         ></EmailPage>}
-        {editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}
+        {/*{editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}*/}
+        {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
       </div>
   );
 }

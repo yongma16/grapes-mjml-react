@@ -26,7 +26,7 @@ export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
           'text-align': 'center',
         },
         stylable: [
-          'text-align',
+          'text-align','width','height',
           'padding', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom',
           'background-color', 'background-url', 'background-repeat', 'background-size',
           'border-radius', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius',
