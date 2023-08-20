@@ -131,7 +131,7 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
   const opts: RequiredPluginOptions = {
     blocks: [
       'mj-body',
-      'mj-1-column', 'mj-2-columns', 'mj-3-columns', 'mj-text', 'mj-button', 'mj-image', 'mj-divider', 'mj-social-group',
+      'mj-1-column', 'mj-2-columns', 'mj-3-columns', 'mj-5-columns', 'mj-text', 'mj-button', 'mj-image', 'mj-divider', 'mj-social-group',
       'mj-social-element', 'mj-spacer', 'mj-navbar', 'mj-navbar-link', 'mj-hero', 'mj-wrapper', 'mj-raw','mj-body','mj-section'
     ],
     block: () => ({}),
@@ -145,7 +145,7 @@ const plugin: Plugin<PluginOptions> = (editor, opt = {}) => {
     resetStyleManager: true,
     resetDevices: true,
     hideSelector: true,
-    useXmlParser: false,
+    useXmlParser: true,
     useCustomTheme: true,
     columnsPadding: '10px 0',
     i18n: {zh},

@@ -18,6 +18,30 @@ const EmailPage=(props:any,ref:any)=>{
                     // localeFallback: 'en', // default fallback
                     messages: { zh },
                 },
+                // panels: {
+                //     defaults  : [
+                //         // {
+                //         //     // If you use this id the default CSS will place this panel on top right corner for you
+                //         //     id      : 'views',
+                //         //     buttons : [{
+                //         //         id        : 'open-style-manager',
+                //         //         className : 'fa fa-paint-brush',
+                //         //         command   : 'open-sm',
+                //         //         active    : true,
+                //         //     },{
+                //         //         id        : 'open-style-manager',
+                //         //         className : 'fa fa-paint-brush',
+                //         //         command   : 'open-sm',
+                //         //         active    : true,
+                //         //     },{
+                //         //         id        : 'open-style-manager',
+                //         //         className : 'fa fa-paint-brush',
+                //         //         command   : 'open-sm',
+                //         //         active    : true,
+                //         //     }]
+                //         // }
+                //     ],
+                // },
                 assetManager:{
                     assets:[
                         {
@@ -66,9 +90,24 @@ const EmailPage=(props:any,ref:any)=>{
 
     useEffect(()=>{
         if(editor){
-
             // @ts-ignore
-            console.log('editor.on',editor.on);
+            const layers = editor.Layers;
+            // @ts-ignore
+            const panelManager = editor.Panels;
+            console.log('layers',layers)
+            const allViewsDom=panelManager.getPanelsEl()
+            const viewsDom=panelManager.getPanel('views')
+            const button= panelManager.getButton('views','open-blocks')
+            // @ts-ignore
+            console.log('layers panelManager',panelManager)
+            console.log('layers panelManager getButton',);
+            console.log('all viewsDom',allViewsDom );
+            console.log('all viewsDom',viewsDom );
+            console.log('views button',button);
+            console.log('views button attributes',button.attributes);
+            console.log('views button active',button.active);
+            button.active=true
+
             // @ts-ignore
             editor.on('asset:upload:start', startAnimation);
             // @ts-ignore
@@ -79,6 +118,7 @@ const EmailPage=(props:any,ref:any)=>{
             editor.on('asset:upload:response', uploadSuceess);
             // @ts-ignore
             editor.on('change:placeholder', changeContent);
+
 
             // @ts-ignore
             const component = editor.getSelected(); // Component selected in canvas
@@ -92,11 +132,77 @@ const EmailPage=(props:any,ref:any)=>{
             // @ts-ignore
             editor.on(`component:create`, model => console.log('Global hook: component:create', model.get('type')));
             // @ts-ignore
+            editor.on('component:focus', ()=>{
+                console.log('focus')
+            });
+            // @ts-ignore
+            editor.on('component:update:click', ()=>{
+                console.log('update click')
+            });
+
+            // @ts-ignore
+            editor.on('click', ()=>{
+                console.log('only click')
+            });
+            // @ts-ignore
+            editor.on('component:click', ()=>{
+                console.log('component click')
+            });
+            // @ts-ignore
+            editor.on('component:event:click', ()=>{
+                console.log('component click')
+            });
+
+
+            // @ts-ignore
+            editor.on('block:click', ()=>{
+                console.log('component click')
+            });
+
+            // @ts-ignore
+            editor.on('component:selected', (e)=>{
+                const editAttrInstance= panelManager.getButton('views','open-sm');
+                editAttrInstance.active=true
+                console.log('component:selected',e)
+            });
+
+            // @ts-ignore
+            editor.on('wrapper:click', ()=>{
+                console.log('wrapper click')
+            });
+
+
+            // @ts-ignore
+            editor.on('component:change:active', ()=>{
+                console.log('component active')
+            });
+
+
+
+            // @ts-ignore
+            editor.on('component:event:click', ()=>{
+                console.log('component click')
+            });
+            // @ts-ignore
             editor.on(`component:mount`, model => console.log('Global hook: component:mount', model.get('type')));
             // @ts-ignore
             editor.on(`component:update:testprop`, model => console.log('Global hook: component:update:testprop', model.get('type')));
             // @ts-ignore
+            editor.on(`component:update:click`, model => console.log('Global hook: component:update:click', model.get('type')));
+            // @ts-ignore
             editor.on(`component:remove`, model => console.log('Global hook: component:remove', model.get('type')));
+            // @ts-ignore
+            editor.on('canvas:click', ()=>{
+                console.log('canvas click')
+            });
+
+            // @ts-ignore
+            // editor.components().forEach(
+            //     (inner:any) => {
+            //         console.log(inner.props())
+            //         console.log(inner,'inner')
+            //     }
+            // );
 
         }
 

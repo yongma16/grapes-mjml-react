@@ -55,6 +55,21 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
       </mj-section>`,
   });
 
+  addBlock('mj-5-columns', {
+    label: getI18nLabel('fiveColumn'),
+    media: `
+    <svg t="1692524414384" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path  fill="currentColor"d="M63.3 64.2h92v895.3h-92zM264.3 64.2h92v895.3h-92zM465.3 64.2h92v895.3h-92zM666.2 64.2h92v895.3h-92zM867.2 64.2h92v895.3h-92z" p-id="4151"></path>
+    </svg>`,
+    content: `<mj-section>
+      <mj-column><mj-text>Content 1</mj-text></mj-column>
+      <mj-column><mj-text>Content 2</mj-text></mj-column>
+      <mj-column><mj-text>Content 3</mj-text></mj-column>
+      <mj-column><mj-text>Content 4</mj-text></mj-column>
+      <mj-column><mj-text>Content 5</mj-text></mj-column>
+    </mj-section>`,
+  });
+
   addBlock('mj-text', {
     label: getI18nLabel('text'),
     media: `<svg viewBox="0 0 24 24">
