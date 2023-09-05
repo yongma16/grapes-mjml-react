@@ -1,7 +1,7 @@
 import grapesJSMJML  from '../components/email-edit/index'
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 import zh from "../components/email-edit/locale/zh";
-
+import grapesCkeditor from 'grapesjs-plugin-ckeditor';
 
 const EmailPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
@@ -11,7 +11,7 @@ const EmailPage=(props:any,ref:any)=>{
             .init({
                 fromElement: true,
                 container: '#gjs-email',
-                plugins: [grapesJSMJML ],
+                plugins: [grapesJSMJML,grapesCkeditor],
                 i18n: {
                     // locale: 'en', // default locale
                     // detectLocale: true, // by default, the editor will detect the language
@@ -161,9 +161,19 @@ const EmailPage=(props:any,ref:any)=>{
 
             // @ts-ignore
             editor.on('component:selected', (e)=>{
+                // const {attributes}=e
+                // if(attributes.tagName!=='mj-section'){
+                //     const editAttrInstance= panelManager.getButton('views','open-sm');
+                //     editAttrInstance.active=true
+                // }
                 const editAttrInstance= panelManager.getButton('views','open-sm');
                 editAttrInstance.active=true
+
                 console.log('component:selected',e)
+            });
+            // @ts-ignore
+            editor.on('component:toggled', (e)=>{
+                console.log('component:toggled',e)
             });
 
             // @ts-ignore

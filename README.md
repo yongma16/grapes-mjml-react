@@ -59,3 +59,9 @@ grapesjs-mjml 版本<grapejs 版本
 ```bash
 $ npm install tea-component
 ```
+
+### 引入ckEditor
+https://github.com/GrapesJS/ckeditor
+```bash
+npm i grapesjs-plugin-ckeditor
+```
