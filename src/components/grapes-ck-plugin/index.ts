@@ -59,31 +59,21 @@ const stopPropagation = (ev: Event) => ev.stopPropagation();
 const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     const opts: Required<PluginOptions> = {
         options: {
-            toolbar: ['heading', //类型
-                '|',
-                'bold', //加粗
-                'italic', //斜体
-                'link', //超链接
-                'bulletedList',// 无序列表
-                'numberedList', //有序列表
-                '|',
-                'indent', //左缩进
-                'outdent', //右缩进
-                '|',
-                'imageUpload', //图片上传
-                'blockQuote', //引用
-                'insertTable', //插入图标
-                'mediaEmbed', //视频上传
-                'undo', //撤销
-                'redo'//重做
-            ],
+            // To enable source code editing in a dialog window, inline editors require the "sourcedialog" plugin.
+            // extraPlugins: 'sharedspace,sourcedialog',
+            // removePlugins: 'floatingspace,maximize,resize',
+            // sharedSpaces: {
+            //     top: 'top2',
+            //     bottom: 'bottom2'
+            // },
+            // removeButtons: 'PasteFromWord'
         },
         customRte: {},
-        position: 'center',
+        position: 'right',
         // ckeditor: 'https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js',
-        // ckeditor: 'https://yongma16.xyz/staticFile/common/markdown/ckeditor/ckeditor.js',
-        ckeditor: '/ckeditor/ckeditor.js',
-        // ckeditor: '/ckeditor4/ckeditor.js',
+        // ckeditor: 'https://yongma16.xyz/ckeditor/ckeditor.js',
+        // ckeditor: '/ckeditor/ckeditor.js',
+        ckeditor: '',
         onToolbar: () => {},
         ...options,
     };
@@ -94,25 +84,26 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     let dynamicLoad = false;
 
     // Check and load CKEDITOR constructor
-    if (ckeditor) {
-        console.log('ckeditor plugin',ckeditor)
-        if (isString(ckeditor)) {
-            if (hasWindow) {
-                dynamicLoad = true;
-                ck = window.CKEDITOR;
-                // const scriptEl = loadFromCDN(ckeditor);
-                // scriptEl.onload = () => {
-                //     ck = window.CKEDITOR;
-                //     console.log('ck grapesjs plugin',ck)
-                // }
-            }
-        } else if (ckeditor.inline!) {
-
-            ck = ckeditor;
-        }
-    } else if (hasWindow) {
-        ck = window.CKEDITOR;
-    }
+    // if (ckeditor) {
+    //     console.log('ckeditor plugin',ckeditor)
+    //     if (isString(ckeditor)) {
+    //         if (hasWindow) {
+    //             dynamicLoad = true;
+    //             ck = window.CKEDITOR;
+    //             const scriptEl = loadFromCDN(ckeditor);
+    //             scriptEl.onload = () => {
+    //                 ck = window.CKEDITOR;
+    //                 console.log('ck grapesjs plugin',ck)
+    //             }
+    //         }
+    //     } else if (ckeditor.inline!) {
+    //
+    //         ck = ckeditor;
+    //     }
+    // } else if (hasWindow) {
+    //     ck = window.CKEDITOR;
+    // }
+    ck = window.CKEDITOR;
 
     const updateEditorToolbars = () => setTimeout(() => editor.refresh(), 0);
     const logCkError = () => {
@@ -158,16 +149,16 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
             // Check for the mandatory options
             const ckOptions = { ...opts.options };
             const plgName = 'sharedspace';
-
-            if (ckOptions.extraPlugins) {
-                if (typeof ckOptions.extraPlugins === 'string') {
-                    ckOptions.extraPlugins += `,${plgName}`;
-                } else if (Array.isArray(ckOptions.extraPlugins)) {
-                    (ckOptions.extraPlugins as string[]).push(plgName);
-                }
-            } else {
-                ckOptions.extraPlugins = plgName;
-            }
+            //
+            // if (ckOptions.extraPlugins) {
+            //     if (typeof ckOptions.extraPlugins === 'string') {
+            //         ckOptions.extraPlugins += `,${plgName}`;
+            //     } else if (Array.isArray(ckOptions.extraPlugins)) {
+            //         (ckOptions.extraPlugins as string[]).push(plgName);
+            //     }
+            // } else {
+            //     ckOptions.extraPlugins = plgName;
+            // }
 
             if(!ckOptions.sharedSpaces) {
                 ckOptions.sharedSpaces = { top: rteToolbar };

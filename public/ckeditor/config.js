@@ -33,6 +33,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' },
 		'/',
 		{ name: 'csdn-yma16' },
+		'/'
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
