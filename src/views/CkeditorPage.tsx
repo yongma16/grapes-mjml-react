@@ -7,7 +7,11 @@ const CkeditorPage=(props:any)=>{
             // @ts-ignore
             CKEDITOR.disableAutoInline = true;
             // @ts-ignore
-            CKEDITOR.inline( 'editor1' );
+            console.log('CKEDITOR plugins',CKEDITOR.plugins)
+            // @ts-ignore
+            CKEDITOR.inline( 'editor1',{
+                position:'center'
+            } );
         }
 
 

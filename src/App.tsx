@@ -8,6 +8,8 @@ import { useState,useEffect,useRef } from 'react';
 import EmailPage from './views/EmailPage'
 import UnlayerPage from './views/UnlayerPage'
 import CkeditorPage from './views/CkeditorPage'
+import CkeditorRender from './views/CkeditorRender'
+import CkeditorClassic from './views/CkeditorClassic'
 import  {sendEmail} from './service/sendEmailApi'
 
 
@@ -81,20 +83,7 @@ function App() {
         <header className="App-header">
           <div style={{width:'50%',textAlign:'left',paddingLeft:'10px'}}>
               email web插件 富文本插件 对比
-              <Segment
-                  style={{margin:'0 20px'}}
-                  rimless={false}
-                  value={editType.toString()}
-                  onChange={value => changeEditype(value)}
-                  options={[
-                      { text: "mjml", value: "mjml" },
-                      { text: "unlayer", value: "unlayer" },
-                      { text: "ckeditor inline html", value: "ckeditor" },
-                  ]}
-              />
 
-
-              当前的插件类型：{editType}
           </div>
             <div style={{minWidth:'150px',fontWeight:'bold',fontSize:'18px'}}>在线编辑邮件</div>
             <div style={{width:'50%',textAlign:'right',paddingRight:'10px'}}>
@@ -115,13 +104,35 @@ function App() {
 
             </div>
         </header>
+          <div style={{height:'120px',display:'flex',alignItems:'center'}}>
+              <Segment
+                  style={{margin:'0 20px'}}
+                  rimless={false}
+                  value={editType.toString()}
+                  onChange={value => changeEditype(value)}
+                  options={[
+                      { text: "mjml", value: "mjml" },
+                      { text: "unlayer", value: "unlayer" },
+                      { text: "ckeditor inline cdn", value: "ckeditor" },
+                      { text: "CkeditorClassic cdn", value: "CkeditorClassic cdn" },
+                      { text: "ckeditor classical npm", value: "ckeditor classical" },
+                  ]}
+              />
 
-        {/*{editType==='grapejs'&&<GrapesPage editInstance={grapesjs} ref={grapesRef}></GrapesPage>}*/}
-        {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
-        ></EmailPage>}
-        {/*{editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}*/}
-        {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
-        {editType==='ckeditor'&&<CkeditorPage ></CkeditorPage>}
+
+              当前的插件类型：{editType}
+          </div>
+
+        <div style={{border:'1px solid #262626'}}>
+            {/*{editType==='grapejs'&&<GrapesPage editInstance={grapesjs} ref={grapesRef}></GrapesPage>}*/}
+            {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
+            ></EmailPage>}
+            {/*{editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}*/}
+            {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
+            {editType==='ckeditor'&&<CkeditorPage ></CkeditorPage>}
+            {editType==='CkeditorClassic cdn'&&<CkeditorClassic ></CkeditorClassic>}
+            {editType==='ckeditor classical'&&<CkeditorRender ></CkeditorRender>}
+        </div>
       </div>
   );
 }
