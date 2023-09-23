@@ -114,3 +114,5 @@ npm install ckeditor4-react
 inline 内联富文本 ckeditor
 
 https://ckeditor.com/docs/ckeditor4/latest/examples/inline.html
+
+sharedspace 组件 必须 维持位置和事件
