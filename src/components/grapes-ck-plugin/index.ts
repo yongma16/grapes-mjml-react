@@ -148,17 +148,19 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
             // Check for the mandatory options
             const ckOptions = { ...opts.options };
+
+            // 需要 sharedspace 插件
             const plgName = 'sharedspace';
-            //
-            // if (ckOptions.extraPlugins) {
-            //     if (typeof ckOptions.extraPlugins === 'string') {
-            //         ckOptions.extraPlugins += `,${plgName}`;
-            //     } else if (Array.isArray(ckOptions.extraPlugins)) {
-            //         (ckOptions.extraPlugins as string[]).push(plgName);
-            //     }
-            // } else {
-            //     ckOptions.extraPlugins = plgName;
-            // }
+
+            if (ckOptions.extraPlugins) {
+                if (typeof ckOptions.extraPlugins === 'string') {
+                    ckOptions.extraPlugins += `,${plgName}`;
+                } else if (Array.isArray(ckOptions.extraPlugins)) {
+                    (ckOptions.extraPlugins as string[]).push(plgName);
+                }
+            } else {
+                ckOptions.extraPlugins = plgName;
+            }
 
             if(!ckOptions.sharedSpaces) {
                 ckOptions.sharedSpaces = { top: rteToolbar };
