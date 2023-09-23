@@ -1,17 +1,85 @@
 import grapesJSMJML  from '../components/email-edit/index'
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
+import  type { Editor } from 'grapesjs';
 import zh from "../components/email-edit/locale/zh";
-import grapesCkeditor from 'grapesjs-plugin-ckeditor';
-
+// import grapesCkeditor from 'grapesjs-plugin-ckeditor';
+// ckeditor
+// @ts-ignore
+import ckEditorPlugin  from '../components/grapes-ck-plugin/index'
+// import { CKEditor } from 'ckeditor4-react';
 const EmailPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
+    // IMPORTANT: place the code in a new plugin
+    // // 自定义富文本
+    // const customRTE = (editor:any) => {
+    //     const focus = (el:any, rte:any) => {
+    //         // implemented later
+    //     }
+    //
+    //     editor.setCustomRte({
+    //         /**
+    //          * Enabling the custom RTE
+    //          * @param  {HTMLElement} el This is the HTML node which was selected to be edited
+    //          * @param  {Object} rte It's the instance you'd return from the first call of enable().
+    //          *                      At the first call it'd be undefined. This is useful when you need
+    //          *                      to check if the RTE is already enabled on the component
+    //          * @return {Object} The return should be the RTE initialized instance
+    //          */
+    //         enable(el:any, rte:any) {
+    //             // If already exists just focus
+    //             if (rte) {
+    //                 focus(el, rte);
+    //                 return rte;
+    //             }
+    //
+    //             // CKEditor initialization
+    //             if(window.CKEDITOR){
+    //                 rte = window.CKEDITOR?.inline(el, {
+    //                     // Your configurations...  自定义富文本工具栏
+    //                     toolbar: ['heading', //类型
+    //                         '|',
+    //                         'bold', //加粗
+    //                         'italic', //斜体
+    //                         'link', //超链接
+    //                         'bulletedList',// 无序列表
+    //                         'numberedList', //有序列表
+    //                         '|',
+    //                         'indent', //左缩进
+    //                         'outdent', //右缩进
+    //                         '|',
+    //                         'imageUpload', //图片上传
+    //                         'blockQuote', //引用
+    //                         'insertTable', //插入图标
+    //                         'mediaEmbed', //视频上传
+    //                         'undo', //撤销
+    //                         'redo'//重做
+    //                     ],
+    //                     // IMPORTANT
+    //                     // Generally, inline editors are attached exactly at the same position of
+    //                     // the selected element but in this case it'd work until you start to scroll
+    //                     // the canvas. For this reason you have to move the RTE's toolbar inside the
+    //                     // one from GrapesJS. For this purpose we used a plugin which simplify
+    //                     // this process and move all next CKEditor's toolbars inside our indicated
+    //                     // element
+    //                     sharedSpaces: {
+    //                         top: editor.RichTextEditor.getToolbarEl(),
+    //                     }
+    //                 });
+    //             }
+    //
+    //
+    //             focus(el, rte);
+    //             return rte;
+    //         },
+    //     });
+    // }
     useEffect(()=>{
         const editorInstance:any = props.editInstance
             .init({
                 fromElement: true,
                 container: '#gjs-email',
-                plugins: [grapesJSMJML,grapesCkeditor],
+                plugins: [grapesJSMJML,ckEditorPlugin],
                 i18n: {
                     // locale: 'en', // default locale
                     // detectLocale: true, // by default, the editor will detect the language

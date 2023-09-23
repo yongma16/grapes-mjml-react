@@ -13,6 +13,8 @@ view:
 
 https://yongma16.xyz/react-mjml/
 
+
+
 ## 邮件测试
 由于gitcode 仓库 使用少
 ```
@@ -63,5 +65,52 @@ $ npm install tea-component
 ### 引入ckEditor
 https://github.com/GrapesJS/ckeditor
 ```bash
-npm i grapesjs-plugin-ckeditor
+$ npm i grapesjs-plugin-ckeditor
 ```
+
+### ckeditor 自定义工具栏 tools
+安装 editor4
+```bash
+$ npm install --save ckeditor4
+```
+
+dialog bug
+
+https://github.com/GrapesJS/ckeditor/issues/26
+
+切换思路 为了方便自定义plugin
+
+完整引入 ckeditor 官方包  到 components
+
+https://github.com/ckeditor/ckeditor4
+
+fork 
+
+https://github.com/yongma16/ckeditor4
+
+官网
+
+https://ckeditor.com/docs/ckeditor4/latest/guide/dev_ckeditor_js_load.html
+
+自定义 插件 
+
+https://ckeditor.com/docs/ckeditor4/latest/guide/plugin_sdk_sample.html
+
+下载 
+https://ckeditor.com/ckeditor-4/download/
+
+下载 openSource
+
+online builder
+https://ckeditor.com/cke4/builder
+
+
+react 引入 ckeditor
+
+```bash
+npm install ckeditor4-react
+```
+
+inline 内联富文本 ckeditor
+
+https://ckeditor.com/docs/ckeditor4/latest/examples/inline.html

@@ -7,6 +7,7 @@ import grapesjs from 'grapesjs';
 import { useState,useEffect,useRef } from 'react';
 import EmailPage from './views/EmailPage'
 import UnlayerPage from './views/UnlayerPage'
+import CkeditorPage from './views/CkeditorPage'
 import  {sendEmail} from './service/sendEmailApi'
 
 
@@ -79,7 +80,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <div style={{width:'50%',textAlign:'left',paddingLeft:'10px'}}>
-              email web插件 对比
+              email web插件 富文本插件 对比
               <Segment
                   style={{margin:'0 20px'}}
                   rimless={false}
@@ -88,6 +89,7 @@ function App() {
                   options={[
                       { text: "mjml", value: "mjml" },
                       { text: "unlayer", value: "unlayer" },
+                      { text: "ckeditor inline html", value: "ckeditor" },
                   ]}
               />
 
@@ -119,6 +121,7 @@ function App() {
         ></EmailPage>}
         {/*{editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}*/}
         {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
+        {editType==='ckeditor'&&<CkeditorPage ></CkeditorPage>}
       </div>
   );
 }
