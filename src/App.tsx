@@ -25,28 +25,35 @@ function App() {
   const grapesRef:any=useRef();
   const presetRef:any=useRef();
   const unLayerRef:any=useRef();
+  const ckeditorUrl:any=useRef();
+  const ckeditorInline:any=useRef();
+  const ckeditorModule:any=useRef();
 
 
   const sendEmailAction=async ()=>{
       setEmailLoading(true);
+      // { text: "ckeditor inline cdn", value: "ckeditor" },
       try{
           let content=''
           if(editType==='grapejs'){
-              console.log(grapesRef)
               content=grapesRef.current.getHtml()
           }
           else if(editType==='mjml'){
-              console.log(emailRef)
               content=emailRef.current.getHtml()
           }
           else if(editType==='unlayer'){
-              console.log(unLayerRef)
               content=await unLayerRef.current.getHtml()
           }
-          else{
-              console.log(presetRef)
-              content=presetRef.current.getHtml()
+          else if(editType==='ckeditor inline'){
+              content=ckeditorInline.current.getHtml()
           }
+          else if(editType==='ckeditor url'){
+              content=ckeditorUrl.current.getHtml()
+          }
+          else if(editType==='ckeditor module'){
+              content=ckeditorModule.current.getHtml()
+          }
+          console.log('editType',editType)
           console.log('content',content)
           const data={
               "toUserEmail":emailNumber,
@@ -113,9 +120,9 @@ function App() {
                   options={[
                       { text: "mjml", value: "mjml" },
                       { text: "unlayer", value: "unlayer" },
-                      { text: "ckeditor inline cdn", value: "ckeditor" },
-                      { text: "CkeditorClassic cdn", value: "CkeditorClassic cdn" },
-                      { text: "ckeditor classical npm", value: "ckeditor classical" },
+                      { text: "ckeditor inline cdn", value: "ckeditor inline" },
+                      { text: "CkeditorClassic cdn", value: "ckeditor url" },
+                      { text: "ckeditor classical npm", value: "ckeditor module" },
                   ]}
               />
 
@@ -129,9 +136,9 @@ function App() {
             ></EmailPage>}
             {/*{editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}*/}
             {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
-            {editType==='ckeditor'&&<CkeditorPage ></CkeditorPage>}
-            {editType==='CkeditorClassic cdn'&&<CkeditorClassic ></CkeditorClassic>}
-            {editType==='ckeditor classical'&&<CkeditorRender ></CkeditorRender>}
+            {editType==='ckeditor inline'&&<CkeditorPage ref={ckeditorInline}></CkeditorPage>}
+            {editType==='ckeditor url'&&<CkeditorClassic ref={ckeditorUrl}></CkeditorClassic>}
+            {editType==='ckeditor module'&&<CkeditorRender ref={ckeditorModule}></CkeditorRender>}
         </div>
       </div>
   );

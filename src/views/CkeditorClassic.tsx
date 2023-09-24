@@ -1,7 +1,7 @@
 
-import { useEffect } from "react";
+import { useEffect, forwardRef, useImperativeHandle, useState } from "react";
 
-const CkeditorPage=(props:any)=>{
+const CkeditorPage=(props:any,ref:any)=>{
     useEffect(()=>{
         if(CKEDITOR){
             // @ts-ignore
@@ -19,11 +19,20 @@ const CkeditorPage=(props:any)=>{
 
     },[])
 
+    const getContent=()=>{
+        // @ts-ignore
+        return CKEDITOR?.instances['editor-classic']?.getData();
+    }
+    useImperativeHandle(ref, () => ({
+        getHtml:getContent,
+        getBodyContent:getContent
+    }));
+
     return <>
-        <textarea name="editor-classic" id="editor-classic" >
+        <textarea name="editor-classic">
         </textarea>
     </>
 };
 
 
-export default CkeditorPage;
+export default forwardRef(CkeditorPage);
