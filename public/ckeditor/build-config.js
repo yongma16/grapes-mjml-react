@@ -55,7 +55,9 @@ var CKBUILDER_CONFIG = {
 		'tests'
 	],
 	plugins : {
-		'csdn-yma16':1,
+
+		'yma16-blog':1,
+		'csdn-yma16':20,
 		'a11yhelp' : 1,
 		'about' : 1,
 		'basicstyles' : 1,

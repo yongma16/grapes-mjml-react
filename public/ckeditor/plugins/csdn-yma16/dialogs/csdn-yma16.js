@@ -3,7 +3,7 @@ CKEDITOR.dialog.add('csdn-yma16', function (editor) { //要和plugin.js 中的co
         return value;
     };
     return {
-        title: '选择一个选项插入文本', //对话框标题
+        title: 'yma16自定义插件', //对话框标题
         minWidth: 500, //对话框宽度
         minHeight: 500,//对话框高度
         contents: [{   //对话框内容

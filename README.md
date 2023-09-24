@@ -104,6 +104,9 @@ https://ckeditor.com/ckeditor-4/download/
 online builder
 https://ckeditor.com/cke4/builder
 
+自定义插件调用api
+https://ckeditor.com/docs/ckeditor4/latest/api
+
 
 react 引入 ckeditor
 
