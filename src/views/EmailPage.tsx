@@ -10,12 +10,27 @@ import ckEditorPlugin  from '../components/grapes-ck-plugin/index'
 const EmailPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
+    const [editorInstance,setEditorInstance]=useState(null);
+    const callbackEmail=(editor:any)=>{
+        // 传递 editor
+        setEditorInstance(editor)
+        console.log('editor',editor)
+    }
     useEffect(()=>{
         const editorInstance:any = props.editInstance
             .init({
                 fromElement: true,
                 container: '#gjs-email',
-                plugins: [grapesJSMJML,ckEditorPlugin],
+                plugins: [grapesJSMJML, ckEditorPlugin],
+                pluginsOpts: {
+                ckEditorPlugin: {
+                    options:{
+                        callbackEmail:callbackEmail
+                    },
+                    callbackEmail:callbackEmail
+
+                },
+            },
                 i18n: {
                     // locale: 'en', // default locale
                     // detectLocale: true, // by default, the editor will detect the language

@@ -1,7 +1,7 @@
 // @ts-ignore
 import EmailEditor from 'react-email-editor';
 import { useRef,forwardRef ,useImperativeHandle} from "react";
-import { Button} from "tea-component";
+import { Button} from "tdesign-react";
 const downHtml=(html:any)=>{
     let fileName = 'unlayer-html文件';
     fileName = fileName + '_'+(new Date()).valueOf()
