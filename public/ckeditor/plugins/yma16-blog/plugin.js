@@ -3,12 +3,17 @@
         init: function( editor ) {
             editor.addCommand( 'jumpToCsdn', {
                 exec: function( editor ) {
-                    console.log(CKEDITOR.config.callbackEmail,'email')
-                    console.log(CKEDITOR.config,'ckeditor config')
-                    console.log(CKEDITOR,'ckeditor CKEDITOR')
-                    if(CKEDITOR.config.callbackEmail){
-                        CKEDITOR.config.callbackEmail(editor)
+                    if(editor.config.callbackEmail){
+                        editor.config.callbackEmail(editor)
                     }
+                    // console.log(editor.config.options,'email')
+                    // // console.log(editor.config.options.callbackEmail,'email callbackEmail')
+                    // console.log(CKEDITOR.config,'CKEDITOR config')
+                    // console.log(CKEDITOR.config.options,'CKEDITOR config options')
+                    // console.log(CKEDITOR.config.callbackEmail,'CKEDITOR.config.callbackEmail')
+                    // if(CKEDITOR.config.callbackEmail){
+                    //     CKEDITOR.config.callbackEmail(editor)
+                    // }
                     // window.open('https://blog.csdn.net/qq_38870145','_blank')
                     // var now = new Date();
                     // editor.insertHtml( 'The current date and time is: <em>' + now.toString() + '</em>' );
