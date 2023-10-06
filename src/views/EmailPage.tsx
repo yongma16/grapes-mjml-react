@@ -1,18 +1,29 @@
 import grapesJSMJML  from '../components/email-edit/index'
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 import zh from "../components/email-edit/locale/zh";
-// import grapesCkeditor from 'grapesjs-plugin-ckeditor';
-// ckeditor
+import {Dialog,Input} from 'tdesign-react'
 // @ts-ignore
 import ckEditorPlugin  from '../components/grapes-ck-plugin/index'
-// import { CKEditor } from 'ckeditor4-react';
+
+
+
+const forEach = <T extends HTMLElement = HTMLElement>(items: Iterable<T>, clb: (item: T) => void) => {
+    [].forEach.call(items, clb);
+}
+
+const stopPropagation = (ev: Event) => ev.stopPropagation();
+
+
 const EmailPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();
     const [domRef,setDomRef]=useState();
+    const [visible,setVisible]=useState(false);
+    const [inputVal,setInputVal]=useState('');
     const [editorInstance,setEditorInstance]=useState(null);
     const callbackEmail=(editor:any)=>{
         // 传递 editor
         setEditorInstance(editor);
+        setVisible(true);
         console.log('editor',editor)
     }
     useEffect(()=>{
@@ -240,12 +251,90 @@ const EmailPage=(props:any,ref:any)=>{
         getBodyContent:getBodyContent
     }));
 
+    const handleClose=()=>{
+        setVisible(false)
+    }
+
+    const onConfirm=()=>{
+        if(editorInstance){
+            // @ts-ignore
+            editorInstance.insertHtml(inputVal);
+        }
+        handleClose()
+    }
+
+    const onCancel=()=>{
+        handleClose()
+    }
+
+    const preventBlur=()=>{
+        let flag=true;
+        console.log('document.querySelector(\'.tdesign-dialog\')',document.querySelector('.tdesign-dialog'))
+        while(flag){
+            console.log('document.querySelector(\'.tdesign-dialog\')',document.querySelector('.tdesign-dialog'))
+            if(document.querySelector('.tdesign-dialog')){
+                const els = document.querySelectorAll<HTMLElement>('.tdesign-dialog,.t-portal-wrapper');
+                forEach(els, (child) => {
+                    console.log('child',child)
+                    child.removeEventListener('mousedown', stopPropagation);
+                    child.addEventListener('mousedown', stopPropagation);
+                });
+
+            }
+            break
+        }
+    }
+
+    // prevent blur
+    useEffect(()=>{
+        if(visible){
+            let timer:any = null;
+            // @ts-ignore
+            function check() {
+                const dom:HTMLElement|null = document.querySelector('.tdesign-dialog')
+
+                if (dom && dom.offsetHeight) {
+                    if (timer) {
+                        clearTimeout(timer)
+                        timer = null;
+                    }
+                    preventBlur()
+                } else {
+                    timer = setTimeout(check, 0)
+                }
+            }
+
+            check()
+        }
+    },[visible])
+
     return (
+        <>
         <div id={'gjs-email'} className={'design-editor'}
              ref={(ref:any)=>{
                  setDomRef(ref)
              }}
         />
+            <Dialog
+                className='tdesign-dialog'
+                header="tdesign 弹框"
+                visible={visible}
+                confirmOnEnter
+                onClose={handleClose}
+                onConfirm={onConfirm}
+                onCancel={onCancel}
+            >
+                <Input
+                    align="left"
+                    size="medium"
+                    status="default"
+                    tips="输入内容写入编辑器"
+                    type="text"
+                    value={inputVal}
+                    onChange={value=>setInputVal(value)}
+                />
+            </Dialog>
+        </>
 
     )
 }
