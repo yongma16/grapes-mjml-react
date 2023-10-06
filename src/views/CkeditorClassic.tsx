@@ -1,8 +1,10 @@
 
-import { useEffect, forwardRef, useImperativeHandle, useState } from "react";
+// @ts-ignore
+import { useEffect, forwardRef, useImperativeHandle } from "react";
 
 const CkeditorPage=(props:any,ref:any)=>{
     useEffect(()=>{
+        // @ts-ignore
         if(CKEDITOR){
             // @ts-ignore
             CKEDITOR.replace( 'editor-classic',{

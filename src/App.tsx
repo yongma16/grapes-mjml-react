@@ -127,10 +127,8 @@ function App() {
           </div>
 
         <div style={{border:'1px solid #262626'}}>
-            {/*{editType==='grapejs'&&<GrapesPage editInstance={grapesjs} ref={grapesRef}></GrapesPage>}*/}
             {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
             ></EmailPage>}
-            {/*{editType==='preset'&&<PresetPage editInstance={grapesjs} ref={presetRef}></PresetPage>}*/}
             {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
             {editType==='ckeditor inline'&&<CkeditorPage ref={ckeditorInline}></CkeditorPage>}
             {editType==='ckeditor url'&&<CkeditorClassic ref={ckeditorUrl}></CkeditorClassic>}

@@ -1,6 +1,5 @@
 import grapesJSMJML  from '../components/email-edit/index'
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
-import  type { Editor } from 'grapesjs';
 import zh from "../components/email-edit/locale/zh";
 // import grapesCkeditor from 'grapesjs-plugin-ckeditor';
 // ckeditor
@@ -13,70 +12,53 @@ const EmailPage=(props:any,ref:any)=>{
     const [editorInstance,setEditorInstance]=useState(null);
     const callbackEmail=(editor:any)=>{
         // 传递 editor
-        setEditorInstance(editor)
+        setEditorInstance(editor);
         console.log('editor',editor)
     }
     useEffect(()=>{
-        const editorInstance:any = props.editInstance
-            .init({
-                fromElement: true,
-                container: '#gjs-email',
-                plugins: [grapesJSMJML, ckEditorPlugin],
-                pluginsOpts: {
-                ckEditorPlugin: {
-                    options:{
-                        callbackEmail:callbackEmail
+        // @ts-ignore
+        const options:any={
+            container: '#gjs-email',
+            plugins: [grapesJSMJML, ckEditorPlugin],
+            pluginsOpts: {
+                // @ts-ignore
+                [ckEditorPlugin]: {
+                    onToolbar: (el:HTMLElement) => {
+                        console.log('el tools',el)
+                        el.style.minWidth = '350px';
                     },
-                    callbackEmail:callbackEmail
+                    options: {
+                        startupFocus: true,
+                        extraAllowedContent: '*(*);*{*}', // Allows any class and any inline style
+                        allowedContent: true, // Disable auto-formatting, class removing, etc.
+                        enterMode: 2, // CKEDITOR.ENTER_BR,
+                        callbackEmail:callbackEmail,
+                    }
 
                 },
             },
-                i18n: {
-                    // locale: 'en', // default locale
-                    // detectLocale: true, // by default, the editor will detect the language
-                    // localeFallback: 'en', // default fallback
-                    messages: { zh },
-                },
-                // panels: {
-                //     defaults  : [
-                //         // {
-                //         //     // If you use this id the default CSS will place this panel on top right corner for you
-                //         //     id      : 'views',
-                //         //     buttons : [{
-                //         //         id        : 'open-style-manager',
-                //         //         className : 'fa fa-paint-brush',
-                //         //         command   : 'open-sm',
-                //         //         active    : true,
-                //         //     },{
-                //         //         id        : 'open-style-manager',
-                //         //         className : 'fa fa-paint-brush',
-                //         //         command   : 'open-sm',
-                //         //         active    : true,
-                //         //     },{
-                //         //         id        : 'open-style-manager',
-                //         //         className : 'fa fa-paint-brush',
-                //         //         command   : 'open-sm',
-                //         //         active    : true,
-                //         //     }]
-                //         // }
-                //     ],
-                // },
-                assetManager:{
-                    assets:[
-                        {
-                            // You can pass any custom property you want
-                            category: 'logo',
-                            src: 'https://yongma16.xyz/staticFile/common/img/logo.png',
-                        }, {
-                            category: 'c1',
-                            src: 'http://placehold.it/350x250/459ba8/fff/image2.jpg',
-                        }, {
-                            category: 'c2',
-                            src: 'http://placehold.it/350x250/79c267/fff/image3.jpg',
-                        }
-                    ]
-                },
-            });
+            i18n: {
+                messages: { zh },
+            },
+            assetManager:{
+                assets:[
+                    {
+                        // You can pass any custom property you want
+                        category: 'logo',
+                        src: 'https://yongma16.xyz/staticFile/common/img/logo.png',
+                    }, {
+                        category: 'c1',
+                        src: 'http://placehold.it/350x250/459ba8/fff/image2.jpg',
+                    }, {
+                        category: 'c2',
+                        src: 'http://placehold.it/350x250/79c267/fff/image3.jpg',
+                    }
+                ]
+            },
+        }
+        console.log('options',options)
+        const editorInstance:any =props.editInstance
+            .init(options);
         try{
             editorInstance.Commands.run('mjml-clear')
         }

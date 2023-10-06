@@ -1,4 +1,5 @@
 import type { Plugin, CustomRTE } from 'grapesjs';
+// @ts-ignore
 import type CKE from 'ckeditor4';
 
 export type PluginOptions = {
@@ -58,25 +59,15 @@ const stopPropagation = (ev: Event) => ev.stopPropagation();
 
 const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     const opts: Required<PluginOptions> = {
-        options: {
-            // To enable source code editing in a dialog window, inline editors require the "sourcedialog" plugin.
-            // extraPlugins: 'sharedspace,sourcedialog',
-            // removePlugins: 'floatingspace,maximize,resize',
-            // sharedSpaces: {
-            //     top: 'top2',
-            //     bottom: 'bottom2'
-            // },
-            // removeButtons: 'PasteFromWord'
-        },
+        options: {},
         customRte: {},
-        position: 'right',
-        // ckeditor: 'https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js',
-        // ckeditor: 'https://yongma16.xyz/ckeditor/ckeditor.js',
-        // ckeditor: '/ckeditor/ckeditor.js',
-        ckeditor: '',
+        position: 'left',
+        ckeditor: '/ckeditor/ckeditor.js',
         onToolbar: () => {},
         ...options,
     };
+    console.log('options before___________________',options)
+    console.log('opts after___________________',opts)
 
     let ck: CKE.CKEditorStatic | undefined;
     const { ckeditor } = opts;
@@ -84,26 +75,23 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     let dynamicLoad = false;
 
     // Check and load CKEDITOR constructor
-    // if (ckeditor) {
-    //     console.log('ckeditor plugin',ckeditor)
-    //     if (isString(ckeditor)) {
-    //         if (hasWindow) {
-    //             dynamicLoad = true;
-    //             ck = window.CKEDITOR;
-    //             const scriptEl = loadFromCDN(ckeditor);
-    //             scriptEl.onload = () => {
-    //                 ck = window.CKEDITOR;
-    //                 console.log('ck grapesjs plugin',ck)
-    //             }
-    //         }
-    //     } else if (ckeditor.inline!) {
-    //
-    //         ck = ckeditor;
-    //     }
-    // } else if (hasWindow) {
-    //     ck = window.CKEDITOR;
-    // }
-    ck = window.CKEDITOR;
+    if (ckeditor) {
+        if (isString(ckeditor)) {
+            if (hasWindow) {
+                dynamicLoad = true;
+                const scriptEl = loadFromCDN(ckeditor);
+                scriptEl.onload = () => {
+                    // @ts-ignore
+                    ck = window.CKEDITOR;
+                }
+            }
+        } else if (ckeditor.inline!) {
+            ck = ckeditor;
+        }
+    } else if (hasWindow) {
+        // @ts-ignore
+        ck = window.CKEDITOR;
+    }
 
     const updateEditorToolbars = () => setTimeout(() => editor.refresh(), 0);
     const logCkError = () => {
@@ -148,8 +136,6 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
             // Check for the mandatory options
             const ckOptions = { ...opts.options };
-
-            // 需要 sharedspace 插件
             const plgName = 'sharedspace';
 
             if (ckOptions.extraPlugins) {

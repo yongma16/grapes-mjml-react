@@ -3,6 +3,7 @@ import { useEffect, useImperativeHandle,forwardRef } from "react";
 
 const CkeditorPage=(props:any,ref:any)=>{
     useEffect(()=>{
+        // @ts-ignore
         if(CKEDITOR){
             // @ts-ignore
             CKEDITOR.disableAutoInline = true;
