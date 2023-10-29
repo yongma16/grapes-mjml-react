@@ -9,6 +9,9 @@ export default {
         tablet: 'Tablet',
         mobile: 'Mobile',
         import: 'Import MJML',
+        export:'导出 html',
+        exportMjml:'导出mjml',
+        searchPlaceholder:'正则查询'
       },
       import: {
         title: 'Import MJML',

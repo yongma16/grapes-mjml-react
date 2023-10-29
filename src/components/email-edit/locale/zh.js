@@ -123,6 +123,9 @@ export default {
                 tablet: 'ipad',
                 mobile: '手机',
                 import: '导入 MJML',
+                export:'导出html',
+                exportMjml:'导出mjml',
+                searchPlaceholder:'正则查询'
             },
             import: {
                 title: '导入 MJML',

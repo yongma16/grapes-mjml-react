@@ -6,7 +6,9 @@ import {
   cmdDeviceMobile,
   cmdDeviceTablet,
   cmdImportMjml,
-  cmdExportMjml, cmdClearMjml
+  cmdExportHtml,
+  cmdExportMjml,
+  cmdClearMjml, cmdSearchPholder
 } from './commands';
 
 export default (editor: Editor, opts: RequiredPluginOptions) => {
@@ -90,9 +92,24 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
   });
   // Add export button
   Panels.addButton('options', {
+    id: cmdExportHtml,
+    command: cmdExportHtml,
+    attributes: { title: getI18nLabel('export') },
+    label: `导出hmtl`,
+  });
+
+  Panels.addButton('options', {
     id: cmdExportMjml,
     command: cmdExportMjml,
-    attributes: { title: getI18nLabel('export') },
-    label: `导出`,
+    attributes: { title: getI18nLabel('exportMjml') },
+    label: `导出mjml`,
   });
+
+  Panels.addButton('options', {
+    id: cmdSearchPholder,
+    command: cmdSearchPholder,
+    attributes: { title: getI18nLabel('searchPlaceholder') },
+    label: `查找value`,
+  });
+
 };
