@@ -1,5 +1,5 @@
 // @ts-ignore
-import mjml2html from '../mjml-browser/lib/index';
+import mjml2html from '../mjml-browser/lib/index.js';
 import type { Editor } from 'grapesjs';
 
 export const isComponentType = (type: string) => (el: Element) => (el.tagName || '').toLowerCase() === type;
