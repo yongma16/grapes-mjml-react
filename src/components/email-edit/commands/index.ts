@@ -1,5 +1,6 @@
 // @ts-ignore
 import type { Editor } from 'grapesjs';
+// @ts-ignore
 import juice  from 'juice'
 import { RequiredPluginOptions } from '..';
 import { mjmlConvert } from '../components/utils';

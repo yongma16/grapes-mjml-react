@@ -1,4 +1,5 @@
 import presetPlugin from '../components/preset-edit'
+// @ts-ignore
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 const PresetPage=(props:any,ref:any)=>{
     const [editor,setEditor]=useState();

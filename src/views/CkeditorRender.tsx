@@ -1,4 +1,6 @@
+// @ts-ignore
 import React, { useEffect, useImperativeHandle, forwardRef, useState } from 'react';
+// @ts-ignore
 import { CKEditor } from 'ckeditor4-react';
 const CkeditorRender=(props:any,ref:any)=>{
     const [data,setData]=useState('<p>Hello from CKEditor 4!</p>')

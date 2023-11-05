@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { Plugin } from 'grapesjs';
 import loadBlocks from './blocks';
 import loadComponents from './components';

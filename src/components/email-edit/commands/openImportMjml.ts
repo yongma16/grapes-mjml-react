@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { Editor } from 'grapesjs';
 import { RequiredPluginOptions } from '..';
 

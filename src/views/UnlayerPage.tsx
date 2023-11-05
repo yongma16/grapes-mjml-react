@@ -1,6 +1,8 @@
 // @ts-ignore
 import EmailEditor from 'react-email-editor';
+// @ts-ignore
 import { useRef,forwardRef ,useImperativeHandle} from "react";
+// @ts-ignore
 import { Button} from "tdesign-react";
 const downHtml=(html:any)=>{
     let fileName = 'unlayer-html文件';

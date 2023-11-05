@@ -1,9 +1,11 @@
 import './App.css';
 import 'grapesjs/dist/css/grapes.min.css';
 import 'tdesign-react/es/style/index.css'; // 少量公共样式
+// @ts-ignore
 import { Button ,message,InputAdornment, Input,Radio } from "tdesign-react";
 // @ts-ignore
 import grapesjs from 'grapesjs';
+// @ts-ignore
 import { useState,useEffect,useRef } from 'react';
 import EmailPage from './views/EmailPage'
 import UnlayerPage from './views/UnlayerPage'

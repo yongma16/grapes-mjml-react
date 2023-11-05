@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { Editor, BlockProperties } from 'grapesjs';
 import { RequiredPluginOptions } from '.';
 
@@ -20,7 +21,19 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
   };
 
   // @ts-ignore
-  const getI18nLabel = (label: string) => editor.I18n.t(`grapesjs-mjml.components.names.${label}`)
+  const getI18nLabel = (label: string) => editor.I18n.t(`grapesjs-mjml.components.names.${label}`);
+
+  addBlock('mj-chart', {
+    label: getI18nLabel('chart'),
+    media: `<svg viewBox="0 0 24 24">
+      <path fill="currentColor" d="M2 20h20V4H2v16Zm-1 0V4a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1Z"/>
+    </svg>`,
+    content: `<mj-section>  
+        <mj-column>
+         <mj-chart chs="700x200" cht="lc" chd="s:cEAELFJHHHKUju9uuXUc" chco="76A4FB" chls="2.0,0.0,0.0" chxt="x,y" chxl="0:|0|1|2|3|4|5|1:|0|50|100" chg="20,50"></mj-chart>
+        </mj-column>
+      </mj-section>`,
+  });
 
   addBlock('mj-1-column', {
     label: getI18nLabel('oneColumn'),

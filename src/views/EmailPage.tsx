@@ -1,6 +1,8 @@
 import grapesJSMJML  from '../components/email-edit/index'
+// @ts-ignore
 import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 import zh from "../components/email-edit/locale/zh";
+// @ts-ignore
 import {Dialog,Input} from 'tdesign-react'
 // @ts-ignore
 import ckEditorPlugin  from '../components/grapes-ck-plugin/index'

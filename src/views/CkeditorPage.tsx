@@ -1,4 +1,4 @@
-
+// @ts-ignore
 import { useEffect, useImperativeHandle,forwardRef } from "react";
 
 const CkeditorPage=(props:any,ref:any)=>{

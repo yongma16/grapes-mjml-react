@@ -138,6 +138,7 @@ export default {
         },
         components: {
             names: {
+                chart:'图表',
                 body: '画布',
                 button: '按钮',
                 column: '列',
