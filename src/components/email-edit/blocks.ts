@@ -25,9 +25,10 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
 
   addBlock('mj-chart', {
     label: getI18nLabel('chart'),
-    media: `<svg viewBox="0 0 24 24">
-      <path fill="currentColor" d="M2 20h20V4H2v16Zm-1 0V4a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1Z"/>
-    </svg>`,
+    media: `<svg t="1699203234814" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4039" >
+<path d="M85.191348 938.808652V0H0v1024h1024v-85.191348H85.191348z" fill="#4F4A4A" p-id="4040"></path><path d="M412.326123 495.813644L711.347754 613.377704l295.613976-462.589018-72.412645-46.003328-257.27787 403.806988-298.169717-117.56406-270.908486 413.178037 70.708818 46.003328 233.424293-354.396007z" fill="#4F4A4A" p-id="4041">
+
+</path></svg>`,
     content: `<mj-section>  
         <mj-column>
          <mj-chart chs="700x200" cht="lc" chd="s:cEAELFJHHHKUju9uuXUc" chco="76A4FB" chls="2.0,0.0,0.0" chxt="x,y" chxl="0:|0|1|2|3|4|5|1:|0|50|100" chg="20,50"></mj-chart>

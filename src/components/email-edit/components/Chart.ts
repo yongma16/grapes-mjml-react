@@ -10,7 +10,7 @@ export const type = 'mj-chart';
 export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
     editor.Components.addType(type, {
         isComponent: isComponentType(type),
-        extend: 'chart',
+        extend: 'image',
         model: {
             ...coreMjmlModel,
             defaults: {
@@ -20,6 +20,14 @@ export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
                 draggable: componentsToQuery([typeSection, typeColumn, typeHero]),
                 stylable: [
                     'width', 'height',
+                    "chs",
+                    "cht",
+                    "chd",
+                    "chco",
+                    "chls",
+                    "chxt",
+                    "chxl",
+                    "chg",
                     // 'padding', 'padding-top', 'padding-left', 'padding-right', 'padding-bottom',
                     // 'border-radius', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius',
                     // 'border', 'border-width', 'border-style', 'border-color',
@@ -32,7 +40,7 @@ export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
                 //     'padding-left': '25px',
                 //     'align': 'center',
                 // },
-                traits: ['title','chart'],
+                // traits: ['title'],
                 void: false,
             },
         },
@@ -57,6 +65,10 @@ export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
 
             getChildrenSelector() {
                 return 'img';
+            },
+
+            rerender() {
+                this.render();
             },
         },
     });

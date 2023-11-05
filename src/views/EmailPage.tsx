@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useState,useImperativeHandle } from 'react'
 import zh from "../components/email-edit/locale/zh";
 // @ts-ignore
 import {Dialog,Input} from 'tdesign-react'
+// import grapesjs from '../components/email-edit/grapesjs-build/grapes.min.js'
 // @ts-ignore
 import ckEditorPlugin  from '../components/grapes-ck-plugin/index'
 
