@@ -4,7 +4,6 @@ import { componentsToQuery, getName, isComponentType } from './utils';
 import { type as typeSection } from './Section';
 import { type as typeColumn } from './Column';
 import { type as typeHero } from './Hero';
-
 export const type = 'mj-chart';
 
 export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
@@ -60,11 +59,12 @@ export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
             },
 
             getTemplateFromEl(sandboxEl: any) {
-                return sandboxEl.querySelector('tr').innerHTML;
+                console.log('sandboxEl',sandboxEl)
+                return sandboxEl.querySelector('div').innerHTML;
             },
 
             getChildrenSelector() {
-                return 'img';
+                return 'div';
             },
 
             rerender() {

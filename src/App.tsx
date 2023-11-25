@@ -14,6 +14,9 @@ import CkeditorRender from './views/CkeditorRender'
 import CkeditorClassic from './views/CkeditorClassic'
 import  {sendEmail} from './service/sendEmailApi'
 
+import html2canvas from "html2canvas";
+import { IFrameElementContainer } from "html2canvas/dist/types/dom/replaced-elements/iframe-element-container";
+
 
 function App() {
   const [editType,setEditType]=useState('mjml');
@@ -28,6 +31,77 @@ function App() {
   const ckeditorInline:any=useRef();
   const ckeditorModule:any=useRef();
 
+
+
+    /** 下载图片 */
+    const downloadBase64 = (content:any,fileName:any) => {
+        const base64ToBlob = function (code:any) {
+            let parts = code.split(';base64,');
+            let contentType = parts[0].split(':')[1];
+            let raw = window.atob(parts[1]);
+            let rawLength = raw.length;
+            let uInt8Array = new Uint8Array(rawLength);
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], {
+                type: contentType
+            });
+        };
+        let aLink = document.createElement('a');
+        let blob = base64ToBlob(content);
+        aLink.download = fileName + '.png';
+        aLink.href = URL.createObjectURL(blob);
+        aLink.click();
+    };
+
+// 截图
+    const shotAction=(dom:any)=>{
+        console.log('dom',dom)
+        html2canvas(dom,{
+            allowTaint:true,
+            useCORS:true,
+            proxy:'localhost',
+            scale:2,
+        }).then(function(canvas) {
+            console.log('canvas',canvas)
+            const base64 = canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, '');
+            const base64img = `data:image/png;base64,${base64}`;
+            downloadBase64(base64img, '邮件');
+            // document.body.appendChild(canvas);
+        });
+    }
+
+    const shotImg=async ()=>{
+        setEmailLoading(true);
+        try {
+            if(editType==='grapejs' ||editType==='mjml' ){
+                // @ts-ignore
+                shotAction(document.getElementsByClassName("gjs-frame")[0].contentWindow.document.body)
+            }
+            else if(editType==='unlayer'){
+                // @ts-ignore
+                shotAction(document.getElementById("editor-2"))
+            }
+            else if(editType==='ckeditor inline'){
+                // @ts-ignore
+                shotAction(document.getElementById("editor-inline"))
+            }
+            else if(editType==='ckeditor url'){
+                // @ts-ignore
+                shotAction(document.getElementById("cke_editor-classic"))
+            }
+            else if(editType==='ckeditor module'){
+                // @ts-ignore
+                shotAction(document.getElementById("cke_editor1"))
+            }
+        }
+        catch (e) {
+            console.error(e)
+        }
+        setTimeout(()=>{setEmailLoading(false)},200)
+    };
 
   const sendEmailAction=async ()=>{
       setEmailLoading(true);
@@ -102,6 +176,9 @@ function App() {
                     <div>
                         <Button style={{marginLeft:'20px'}} onClick={()=>sendEmailAction()} type="button"  loading={emailLoading}>发送邮件</Button>
                     </div>
+                <div>
+                    <Button style={{marginLeft:'20px'}} onClick={()=>shotImg()} type="button"  loading={emailLoading}>截图</Button>
+                </div>
 
                     <div>
                         <Button style={{marginLeft:'20px',lineHeight:'32px',background:'transparent',border:'none'}} onClick={()=>{window.open('https://github.com/yongma16/grapes-mjml-react','blank')}} type="button" >
@@ -121,7 +198,7 @@ function App() {
                       { text: "ckeditor inline cdn", value: "ckeditor inline" },
                       { text: "Ckeditor classic cdn", value: "ckeditor url" },
                       { text: "ckeditor classical npm", value: "ckeditor module" },
-                  ].map(item=>{return ( <Radio.Button value={item.value}>{item.text}</Radio.Button>)})}
+                  ].map((item,index)=>{return ( <Radio.Button value={item.value} key={index}>{item.text}</Radio.Button>)})}
               </Radio.Group>
 
 

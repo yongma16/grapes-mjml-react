@@ -95,7 +95,7 @@ export default (editor: Editor, opts: RequiredPluginOptions) => {
     id: cmdExportHtml,
     command: cmdExportHtml,
     attributes: { title: getI18nLabel('export') },
-    label: `导出hmtl`,
+    label: `导出html`,
   });
 
   Panels.addButton('options', {
