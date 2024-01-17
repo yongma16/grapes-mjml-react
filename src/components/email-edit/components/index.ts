@@ -20,7 +20,7 @@ import loadNavBar from './NavBar';
 import loadNavBarLink from './NavBarLink';
 import loadHero from './Hero';
 import loadRaw from './Raw';
-import loadChart from './Chart';
+// import loadChart from './Chart';
 import { RequiredPluginOptions } from '..';
 
 export default (editor: Editor, opt: RequiredPluginOptions) => {
@@ -310,8 +310,7 @@ export default (editor: Editor, opt: RequiredPluginOptions) => {
     loadNavBar,
     loadNavBarLink,
     loadHero,
-    loadRaw,
-    loadChart
+    loadRaw
   ]
   .forEach(module => module(editor, compOpts));
 };

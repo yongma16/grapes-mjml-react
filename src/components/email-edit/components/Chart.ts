@@ -51,7 +51,7 @@ export default (editor: Editor, { coreMjmlModel, coreMjmlView }: any) => {
                 style: 'pointer-events: all; display: table; width: 100%; user-select: none;',
             },
 
-            getMjmlTemplate() {
+            getMjmlTemplate() {0
                 return {
                     start: `<mjml><mj-body width="auto"><mj-column>`,
                     end: `</mj-column></mj-body></mjml>`,
