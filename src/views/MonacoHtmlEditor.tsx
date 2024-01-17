@@ -5,9 +5,9 @@ import {htmlLangConfig} from './const'
 import {htmlString} from './html'
 
 import MonacoEditor,{ monaco }  from 'react-monaco-editor';
-monaco.languages.register({id:'html'})
-// @ts-ignore
-monaco.languages.setMonarchTokensProvider('html',{...htmlLangConfig});
+// monaco.languages.register({id:'html'})
+// // @ts-ignore
+// monaco.languages.setMonarchTokensProvider('html',{...htmlLangConfig});
 
 function MonacoHtmlEditor(props:any,ref:any){
     const [content,setContent]=useState(htmlString)
@@ -28,6 +28,12 @@ function MonacoHtmlEditor(props:any,ref:any){
     const onChange=(value:string)=>{
         setContent(value)
         renderIframe(value)
+    }
+
+    const onEditorDidMount=(editor: any, monaco: any) => {
+        // 格式化
+        editor.getAction('editor.action.formatDocument').run()
+        console.log('format')
     }
 
     useEffect(()=>{
@@ -55,6 +61,7 @@ function MonacoHtmlEditor(props:any,ref:any){
                     value={content}
                     onChange={onChange}
                     options={options}
+                    editorDidMount={onEditorDidMount}
                 />
             </div>
             <div style={{flex:1}}>
