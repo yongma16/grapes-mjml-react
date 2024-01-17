@@ -123,3 +123,12 @@ sharedspace 组件 必须 维持位置和事件
 chart 图表组件
 
 git+https://github.com/image-charts/mjml-chart.git
+
+react 引入 monaco editor
+
+
+```bash
+npm install  react-monaco-editor
+npm install  monaco-editor-webpack-plugin
+npm install  react-app-rewired
+```
