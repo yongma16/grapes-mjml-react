@@ -12,6 +12,7 @@ import UnlayerPage from './views/UnlayerPage'
 import CkeditorPage from './views/CkeditorPage'
 import CkeditorRender from './views/CkeditorRender'
 import CkeditorClassic from './views/CkeditorClassic'
+import  MonacoHtmlEditor from './views/MonacoHtmlEditor'
 import  {sendEmail} from './service/sendEmailApi'
 
 import html2canvas from "html2canvas";
@@ -19,7 +20,7 @@ import { IFrameElementContainer } from "html2canvas/dist/types/dom/replaced-elem
 
 
 function App() {
-  const [editType,setEditType]=useState('mjml');
+  const [editType,setEditType]=useState('monaco');
   const [emailLoading,setEmailLoading]=useState(false);
   const [emailNumber,setEmailNumber]=useState('1432448610@qq.com');
 
@@ -30,6 +31,7 @@ function App() {
   const ckeditorUrl:any=useRef();
   const ckeditorInline:any=useRef();
   const ckeditorModule:any=useRef();
+  const monacoHtmlRef:any=useRef();
 
 
 
@@ -96,6 +98,10 @@ function App() {
                 // @ts-ignore
                 shotAction(document.getElementById("cke_editor1"))
             }
+            else if(editType==='monaco'){
+                // @ts-ignore
+                shotAction(document.getElementById("monaco_html_id"))
+            }
         }
         catch (e) {
             console.error(e)
@@ -108,7 +114,10 @@ function App() {
       // { text: "ckeditor inline cdn", value: "ckeditor" },
       try{
           let content=''
-          if(editType==='grapejs'){
+          if(editType==='monaco'){
+              content=monacoHtmlRef.current.getHtml()
+          }
+          else if(editType==='grapejs'){
               content=grapesRef.current.getHtml()
           }
           else if(editType==='mjml'){
@@ -193,6 +202,7 @@ function App() {
           <div style={{height:'120px',display:'flex',alignItems:'center'}}>
               <Radio.Group variant="default-filled" defaultValue={editType} onChange={(value:any)=>setEditType(value)}>
                   {[
+                      { text: "monaco editor", value: "monaco" },
                       { text: "mjml", value: "mjml" },
                       { text: "unlayer", value: "unlayer" },
                       { text: "ckeditor inline cdn", value: "ckeditor inline" },
@@ -208,6 +218,8 @@ function App() {
         <div style={{border:'1px solid #262626'}}>
             {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
             ></EmailPage>}
+            {editType==='monaco'&&<MonacoHtmlEditor  ref={monacoHtmlRef}
+            ></MonacoHtmlEditor>}
             {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}
             {editType==='ckeditor inline'&&<CkeditorPage ref={ckeditorInline}></CkeditorPage>}
             {editType==='ckeditor url'&&<CkeditorClassic ref={ckeditorUrl}></CkeditorClassic>}
