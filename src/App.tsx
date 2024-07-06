@@ -13,14 +13,14 @@ import CkeditorPage from './views/CkeditorPage'
 import CkeditorRender from './views/CkeditorRender'
 import CkeditorClassic from './views/CkeditorClassic'
 import  MonacoHtmlEditor from './views/MonacoHtmlEditor'
+import  ReacrDragDemo from './views/drag-box/index'
 import  {sendEmail} from './service/sendEmailApi'
 
 import html2canvas from "html2canvas";
-import { IFrameElementContainer } from "html2canvas/dist/types/dom/replaced-elements/iframe-element-container";
 
 
 function App() {
-  const [editType,setEditType]=useState('monaco');
+  const [editType,setEditType]=useState('react-drag');
   const [emailLoading,setEmailLoading]=useState(false);
   const [emailNumber,setEmailNumber]=useState('1432448610@qq.com');
 
@@ -202,6 +202,7 @@ function App() {
           <div style={{height:'120px',display:'flex',alignItems:'center'}}>
               <Radio.Group variant="default-filled" defaultValue={editType} onChange={(value:any)=>setEditType(value)}>
                   {[
+                      { text: "react-drag", value: "react-drag" },
                       { text: "monaco editor", value: "monaco" },
                       { text: "mjml", value: "mjml" },
                       { text: "unlayer", value: "unlayer" },
@@ -218,6 +219,8 @@ function App() {
         <div style={{border:'1px solid #262626'}}>
             {editType==='mjml'&&<EmailPage editInstance={grapesjs} ref={emailRef}
             ></EmailPage>}
+            {editType==='react-drag'&&<ReacrDragDemo
+            ></ReacrDragDemo>}
             {editType==='monaco'&&<MonacoHtmlEditor  ref={monacoHtmlRef}
             ></MonacoHtmlEditor>}
             {editType==='unlayer'&&<UnlayerPage ref={unLayerRef}></UnlayerPage>}

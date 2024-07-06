@@ -33,3 +33,17 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+.drag-container-box{
+  display:flex
+}
+.drag-container-box-left{
+  flex:1
+}
+.drag-container-box-right{
+  flex:1;
+  display: flex;
+  justify-content: flex-end;
+}

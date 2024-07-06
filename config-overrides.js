@@ -7,4 +7,4 @@ module.exports = function override(config, env) {
         languages: ['html']
     }));
     return config;
-}
+};
