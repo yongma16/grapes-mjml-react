@@ -1,85 +1,32 @@
 // @ts-ignore
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState,useCallback } from 'react';
 // @ts-ignore
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-//
-// import Task from './componets/Task'
-const getData=()=>{
-    let res=[]
-    for(let i=0;i<10;++i){
-        res.push({
-            id:i
-        })
-    }
-    return res
-}
-// fake data generator
-const getItems = (count:number) =>{
-    let res=[]
-    for(let i=0;i<count;++i){
-        res.push({
-                id: `item-${i}`,
-                content: `item ${i}`
-        })
-    }
-    return res
-}
-    // Array.from({ length: count }, (v, k) => k).map(k => ({
-    //     id: `item-${k}`,
-    //     content: `item ${k}`
-    // }));
 
-// fake data generator
-const getRightItems = (count:number,start:number) =>{
-    let res=[]
-    for(let i=start;i<count+start;++i){
-        res.push({
-            id: `item-${i}`,
-            content: `item ${i}`
-        })
-    }
-    return res
-}
-
-// a little function to help us with reordering the result
-const reorder = (list:any, startIndex:number, endIndex:number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-};
-
-const grid = 8;
-
-const getItemStyle = (isDragging:boolean, draggableStyle:any) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: "none",
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
-
-    // change background colour if dragging
-    background: isDragging ? "lightgreen" : "grey",
-
-    // styles we need to apply on draggables
-    ...draggableStyle
-});
-
-const getListStyle = (isDraggingOver:boolean) => {
-    console.log('isDraggingOver',isDraggingOver)
-    return ({
-        background: isDraggingOver ? "lightblue" : "lightgrey",
-        padding: grid,
-        width: 250
-    })
-};
-
+import {getListStyle,getItems,getRightItems,reorder,getItemStyle} from './const'
 
 
 const ReactDragDemo=(props:any,ref:any)=> {
 
     const [items,setItems] =useState(getItems(10))
     const [rightItems,setRightItems] =useState(getRightItems(10,10))
+    // using useCallback is optional
+    const onBeforeCapture = useCallback((e:any) => {
+        console.log('onBeforeCapture',e)
+        /*...*/
+    }, []);
+    const onBeforeDragStart = useCallback(() => {
+        /*...*/
+    }, []);
+    const onDragStart = useCallback(() => {
+        /*...*/
+    }, []);
+    const onDragUpdate = useCallback(() => {
+        /*...*/
+    }, []);
+    const onDragEnd = useCallback(() => {
+        // the only one that is required
+    }, []);
 
     const onDragLeftEnd=(result:any)=>{
         console.log('result left',result)
@@ -128,7 +75,7 @@ const ReactDragDemo=(props:any,ref:any)=> {
     return <>
         <div className='drag-container-box'>
             <div className='drag-container-box-left'>
-                <DragDropContext onDragEnd={onDragLeftEnd} >
+                <DragDropContext onBeforeCapture={onBeforeCapture} onDragEnd={onDragLeftEnd} >
                     <Droppable droppableId="droppable-id-test-left">
                         {(provided:any, snapshot:any) => (
                             <div
@@ -163,13 +110,33 @@ const ReactDragDemo=(props:any,ref:any)=> {
             <div className='drag-container-box-right'>
                 <DragDropContext onDragEnd={onDragRightEnd}>
                     <Droppable droppableId="droppable-id-test-right"
-                    //            renderClone={(provided, snapshot, rubric) => (
-                    //   <Item
-                    //     provided={provided}
-                    //     isDragging={snapshot.isDragging}
-                    //     item={column.items[rubric.source.index]}
-                    //   />
-                    // )}
+                               // renderClone={(provided:any, snapshot:any, rubric:any) => {
+                               //     return  <div
+                               //         {...provided.droppableProps}
+                               //         ref={provided.innerRef}
+                               //         style={getListStyle(snapshot.isDraggingOver)}
+                               //         className='drag-box-custom'
+                               //       >
+                               //           {rightItems.map((item, index) => (
+                               //             <Draggable key={item.id} draggableId={item.id} index={index}>
+                               //                 {(providedItem:any, snapshotItem:any) => (
+                               //                   <div
+                               //                     ref={providedItem.innerRef}
+                               //                     {...providedItem.draggableProps}
+                               //                     {...providedItem.dragHandleProps}
+                               //                     style={getItemStyle(
+                               //                       snapshotItem.isDragging,
+                               //                       providedItem.draggableProps.style
+                               //                     )}
+                               //                   >
+                               //                       {item.content}
+                               //                   </div>
+                               //                 )}
+                               //             </Draggable>
+                               //           ))}
+                               //           {provided.placeholder}
+                               //       </div>
+                               // }}
                     >
                         {(provided:any, snapshot:any) => (
                             <div
@@ -179,7 +146,7 @@ const ReactDragDemo=(props:any,ref:any)=> {
                                 className='drag-box-custom'
                             >
                                 {rightItems.map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index} isDragDisabled>
+                                    <Draggable key={item.id} draggableId={item.id} index={index} >
                                         {(providedItem:any, snapshotItem:any) => (
                                             <div
                                                 ref={providedItem.innerRef}
