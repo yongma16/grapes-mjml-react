@@ -23,6 +23,7 @@ function App() {
   const [editType,setEditType]=useState('react-drag');
   const [emailLoading,setEmailLoading]=useState(false);
   const [emailNumber,setEmailNumber]=useState('1432448610@qq.com');
+  const [emailTitle,setEmailTitle]=useState(editType);
 
   const emailRef:any=useRef();
   const grapesRef:any=useRef();
@@ -139,7 +140,7 @@ function App() {
           console.log('content',content)
           const data={
               "toUserEmail":emailNumber,
-              "title":editType,
+              "title":emailTitle,
               "content":content
           };
           const res=await sendEmail(data)
@@ -177,7 +178,12 @@ function App() {
           </div>
             <div style={{minWidth:'150px',fontWeight:'bold',fontSize:'18px'}}>在线编辑邮件</div>
             <div style={{display:'flex',justifyItems:'center',alignItems:'center',float:"right"}}>
-                    <div>
+              <div>
+                <InputAdornment prepend="邮件标题：">
+                  <Input  value={emailTitle} placeholder={'请输入邮件标题'} onChange={(value:any)=>setEmailTitle(value)} />
+                </InputAdornment>
+              </div>
+                    <div style={{marginLeft:'20px'}}>
                         <InputAdornment prepend="邮箱：">
                             <Input  value={emailNumber} placeholder={'请输入邮箱'} onChange={(value:any)=>setEmailNumber(value)} />
                         </InputAdornment>
