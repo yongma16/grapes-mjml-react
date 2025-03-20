@@ -8,6 +8,7 @@ import grapesjs from "grapesjs";
 // @ts-ignore
 import { useState, useEffect, useRef } from "react";
 import EmailPage from "./views/EmailPage";
+import VideoCover from "./views/videoCover";
 import UnlayerPage from "./views/UnlayerPage";
 // import CkeditorPage from "./views/CkeditorPage";
 // import CkeditorRender from "./views/CkeditorRender";
@@ -21,7 +22,7 @@ import { sendEmail } from "./service/sendEmailApi";
 import html2canvas from "html2canvas";
 
 function App() {
-  const [editType, setEditType] = useState("scroll-demo");
+  const [editType, setEditType] = useState("VideoCover");
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailNumber, setEmailNumber] = useState("1432448610@qq.com");
   const [emailTitle, setEmailTitle] = useState(editType);
@@ -260,6 +261,7 @@ function App() {
         >
           {[
             { text: "scroll-demo", value: "scroll-demo" },
+            { text: "youtube tiktok video cover", value: "VideoCover" },
             { text: "color-demo", value: "color-demo" },
             { text: "react-drag", value: "react-drag" },
             { text: "monaco editor", value: "monaco" },
@@ -281,6 +283,7 @@ function App() {
 
       <div style={{ border: "1px solid #262626" }}>
         {editType === "scroll-demo" && <ScrollDemo></ScrollDemo>}
+        {editType === "VideoCover" && <VideoCover></VideoCover>}
         {editType === "mjml" && (
           <EmailPage editInstance={grapesjs} ref={emailRef}></EmailPage>
         )}
