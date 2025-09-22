@@ -17,12 +17,14 @@ import MonacoHtmlEditor from "./views/MonacoHtmlEditor";
 import ReacrDragDemo from "./views/drag-box/index";
 import ColorDemo from "./views/colorDemo";
 import ScrollDemo from "./views/scrollDemo";
+
+import CustomListEditor from "./views/CustomListEditor";
 import { sendEmail } from "./service/sendEmailApi";
 
 import html2canvas from "html2canvas";
 
 function App() {
-  const [editType, setEditType] = useState("VideoCover");
+  const [editType, setEditType] = useState("CustomListEditor");
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailNumber, setEmailNumber] = useState("1432448610@qq.com");
   const [emailTitle, setEmailTitle] = useState(editType);
@@ -260,6 +262,7 @@ function App() {
           onChange={(value: any) => setEditType(value)}
         >
           {[
+            { text: "CustomListEditor", value: "CustomListEditor" },
             { text: "scroll-demo", value: "scroll-demo" },
             { text: "youtube tiktok video cover", value: "VideoCover" },
             { text: "color-demo", value: "color-demo" },
@@ -282,6 +285,7 @@ function App() {
       </div>
 
       <div style={{ border: "1px solid #262626" }}>
+        {editType === "CustomListEditor" && <CustomListEditor></CustomListEditor>}
         {editType === "scroll-demo" && <ScrollDemo></ScrollDemo>}
         {editType === "VideoCover" && <VideoCover></VideoCover>}
         {editType === "mjml" && (
