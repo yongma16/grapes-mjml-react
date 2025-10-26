@@ -13,13 +13,7 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  height: 80px;
-  color: #fff;
-  display: flex;
-  line-height: 80px;
-}
+/* App header styles moved to components/AppHeader/styles.css */
 
 .App-link {
   color: #61dafb;

@@ -1,0 +1,13 @@
+.editor-selector {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.editor-selector__current {
+  color: #333;
+  font-size: 14px;
+}
+

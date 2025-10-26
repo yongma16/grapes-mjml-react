@@ -1,0 +1,46 @@
+.app-header {
+  background-color: #282c34;
+  height: 80px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.app-header__title {
+  width: 50%;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.app-header__center {
+  min-width: 150px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.app-header__actions {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  margin-left: auto;
+}
+
+.app-header__input-group {
+  margin-left: 20px;
+}
+
+.app-header__input-group:first-child {
+  margin-left: 0;
+}
+
+.app-header__button {
+  margin-left: 20px;
+}
+
+.app-header__button--icon {
+  line-height: 32px;
+  background: transparent;
+  border: none;
+}
+

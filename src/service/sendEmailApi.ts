@@ -1,5 +1,18 @@
 import axios from 'axios'
 
-export function sendEmail(params:any){
-    return axios.post('/third-login/sendEmail',params)
+export interface SendEmailParams {
+  toUserEmail: string;
+  title: string;
+  content: string;
+}
+
+export interface SendEmailResponse {
+  data: {
+    code: number;
+    msg: string;
+  };
+}
+
+export function sendEmail(params: SendEmailParams): Promise<SendEmailResponse> {
+  return axios.post('/third-login/sendEmail', params)
 }

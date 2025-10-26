@@ -10,6 +10,18 @@ import MonacoEditor, { monaco } from 'react-monaco-editor';
 // // @ts-ignore
 // monaco.languages.setMonarchTokensProvider('html',{...htmlLangConfig});
 
+// 默认变量列表
+const DEFAULT_VARIABLES = [
+    { label: 'userName', insertText: 'userName', detail: '用户名', kind: 'variable' },
+    { label: 'userEmail', insertText: 'userEmail', detail: '用户邮箱', kind: 'variable' },
+    { label: 'orderNumber', insertText: 'orderNumber', detail: '订单号', kind: 'variable' },
+    { label: 'orderDate', insertText: 'orderDate', detail: '订单日期', kind: 'variable' },
+    { label: 'productName', insertText: 'productName', detail: '产品名称', kind: 'variable' },
+    { label: 'productPrice', insertText: 'productPrice', detail: '产品价格', kind: 'variable' },
+    { label: 'totalAmount', insertText: 'totalAmount', detail: '总金额', kind: 'variable' },
+    { label: 'companyName', insertText: 'companyName', detail: '公司名称', kind: 'variable' },
+];
+
 function MonacoHtmlEditor(props: any, ref: any) {
     const [content, setContent] = useState(localStorage.getItem('html_editor_content') || htmlString)
 
@@ -23,6 +35,11 @@ function MonacoHtmlEditor(props: any, ref: any) {
     const [cursorPosition, setCursorPosition] = useState<{ line: number; column: number } | null>(null);
     const [highlightedRanges, setHighlightedRanges] = useState<any[]>([]);
     const decorationsRef = useRef<monaco.editor.IEditorDecorationsCollection | null>(null);
+    const isApplyingHighlightsRef = useRef<boolean>(false); // 防止递归调用的标志位
+    const highlightTimeoutRef = useRef<NodeJS.Timeout | null>(null); // 防抖定时器
+    
+    // 从 props 获取变量列表，如果没有则使用默认列表
+    const variables = props.variables || DEFAULT_VARIABLES;
 
     // 解析内容并高亮 {{}} 表达式
     const parseAndHighlight = (text: string): any[] => {
@@ -55,65 +72,116 @@ function MonacoHtmlEditor(props: any, ref: any) {
 
     // 应用高亮
     const applyHighlights = (ranges: any[]) => {
-        if (!editorRef.current || !monacoRef.current) return;
+        if (!editorRef.current || !monacoRef.current || !decorationsRef.current) return;
+        
+        // 防止递归调用
+        if (isApplyingHighlightsRef.current) return;
+        isApplyingHighlightsRef.current = true;
 
-        const monacoInstance = monacoRef.current;
-        const decorations: monaco.editor.IModelDeltaDecoration[] = [];
+        try {
+            const monacoInstance = monacoRef.current;
+            const decorations: monaco.editor.IModelDeltaDecoration[] = [];
 
-        console.log('ranges', ranges)
-        ranges.forEach(range => {
-            const startPos = editorRef.current!.getModel()!.getPositionAt(range.start);
-            const endPos = editorRef.current!.getModel()!.getPositionAt(range.end);
+            ranges.forEach(range => {
+                const startPos = editorRef.current!.getModel()!.getPositionAt(range.start);
+                const endPos = editorRef.current!.getModel()!.getPositionAt(range.end);
 
-            let className = '';
-            switch (range.color) {
-                case 'green':
-                    className = 'highlight-green';
-                    break;
-                case 'blue':
-                    className = 'highlight-blue';
-                    break;
-                case 'red':
-                    className = 'highlight-red';
-                    break;
-            }
-
-            decorations.push({
-                range: new monacoInstance.Range(
-                    startPos.lineNumber,
-                    startPos.column,
-                    endPos.lineNumber,
-                    endPos.column
-                ),
-                options: {
-                    inlineClassName: className,
-                    hoverMessage: {
-                        value: `表达式: {{${editorRef.current!.getModel()!.getValueInRange(
-                            new monacoInstance.Range(
-                                startPos.lineNumber,
-                                startPos.column + 2, // 跳过 {{
-                                endPos.lineNumber,
-                                endPos.column - 2    // 跳过 }}
-                            )
-                        )}}}`
-                    }
+                let className = '';
+                switch (range.color) {
+                    case 'green':
+                        className = 'highlight-green';
+                        break;
+                    case 'blue':
+                        className = 'highlight-blue';
+                        break;
+                    case 'red':
+                        className = 'highlight-red';
+                        break;
                 }
+
+                decorations.push({
+                    range: new monacoInstance.Range(
+                        startPos.lineNumber,
+                        startPos.column,
+                        endPos.lineNumber,
+                        endPos.column
+                    ),
+                    options: {
+                        inlineClassName: className,
+                        hoverMessage: {
+                            value: `表达式: {{${editorRef.current!.getModel()!.getValueInRange(
+                                new monacoInstance.Range(
+                                    startPos.lineNumber,
+                                    startPos.column + 2, // 跳过 {{
+                                    endPos.lineNumber,
+                                    endPos.column - 2    // 跳过 }}
+                                )
+                            )}}}`
+                        }
+                    }
+                });
             });
-        });
 
-        // 清除旧的高亮并应用新的
-        const decorationIds = editorRef.current.deltaDecorations([], decorations);
-
-        // 保存装饰器引用以便后续清理
-        if (decorationsRef.current) {
-            decorationsRef.current.clear();
+            // 只使用 decorationsRef.current.set() 来更新装饰器，避免递归调用
             decorationsRef.current.set(decorations);
+        } finally {
+            isApplyingHighlightsRef.current = false;
         }
+    };
+
+    // 获取当前位置在 {{}} 内的内容范围
+    const getBracketRange = (model: any, position: any): { start: any; end: any; content: string, fullRange?: { start: any; end: any } } | null => {
+        const lineContent = model.getLineContent(position.lineNumber);
+        const textUntilCursor = lineContent.substring(0, position.column - 1);
+        const textAfterCursor = lineContent.substring(position.column - 1);
+
+        // 查找最近的 {{
+        const lastOpenBracket = textUntilCursor.lastIndexOf('{{');
+        if (lastOpenBracket === -1) return null;
+
+        // 检查在 {{ 之后是否已经有 }}
+        const nextCloseBracket = textUntilCursor.indexOf('}}', lastOpenBracket);
+        if (nextCloseBracket !== -1 && nextCloseBracket > lastOpenBracket) return null;
+
+        // 检查后面是否有 }}
+        const futureCloseBracket = textAfterCursor.indexOf('}}');
+        if (futureCloseBracket === -1) return null;
+
+        // 计算变量内容的起始和结束位置
+        const contentStart = lastOpenBracket + 2;
+        const contentEnd = position.column - 1;
+        const content = lineContent.substring(contentStart, contentEnd);
+        
+        // 计算完整的 {{}} 范围（包括大括号）
+        const fullBracketEnd = position.column - 1 + futureCloseBracket + 2;
+
+        return {
+            start: {
+                lineNumber: position.lineNumber,
+                column: contentStart + 1
+            },
+            end: {
+                lineNumber: position.lineNumber,
+                column: contentEnd + 1
+            },
+            content: content,
+            fullRange: {
+                start: {
+                    lineNumber: position.lineNumber,
+                    column: lastOpenBracket + 1
+                },
+                end: {
+                    lineNumber: position.lineNumber,
+                    column: fullBracketEnd + 1
+                }
+            }
+        };
     };
 
     // 设置自动完成
     const setupCompletions = (monaco: any) => {
-        monaco.languages.registerCompletionItemProvider('plaintext', {
+        // 为 HTML 语言注册补全提供者
+        monaco.languages.registerCompletionItemProvider('html', {
             provideCompletionItems: (model: any, position: any) => {
                 const textUntilPosition = model.getValueInRange({
                     startLineNumber: 1,
@@ -122,8 +190,44 @@ function MonacoHtmlEditor(props: any, ref: any) {
                     endColumn: position.column
                 });
 
-                // 如果用户输入了 { 或 {{，提供自动完成
-                if (textUntilPosition.endsWith('{') || textUntilPosition.endsWith('{{')) {
+                // 检查是否在 {{}} 内
+                const bracketRange = getBracketRange(model, position);
+                if (bracketRange && bracketRange.fullRange) {
+                    const inputContent = bracketRange.content.toLowerCase();
+                    
+                    // 过滤变量列表，根据已输入的内容进行匹配
+                    const filteredVariables = variables.filter((varItem: any) => {
+                        const label = varItem.label.toLowerCase();
+                        return label.includes(inputContent);
+                    });
+
+                    // 构建补全建议
+                    const suggestions = filteredVariables.map((varItem: any) => {
+                        const variableName = varItem.insertText || varItem.label;
+                        // 插入格式：类型:{{变量内容}}concat:{{}}
+                        const insertText = `类型:{{${variableName}}}concat:{{}}`;
+                        
+                        return {
+                            label: varItem.label,
+                            kind: monaco.languages.CompletionItemKind.Variable,
+                            insertText: insertText,
+                            detail: varItem.detail || varItem.label,
+                            documentation: varItem.documentation || varItem.detail || `变量: ${varItem.label}`,
+                            range: {
+                                startLineNumber: bracketRange.fullRange!.start.lineNumber,
+                                endLineNumber: bracketRange.fullRange!.end.lineNumber,
+                                startColumn: bracketRange.fullRange!.start.column,
+                                endColumn: bracketRange.fullRange!.end.column
+                            },
+                            sortText: varItem.label.startsWith(inputContent) ? '0' : '1' // 完全匹配的排在前面
+                        };
+                    });
+
+                    return { suggestions };
+                }
+
+                // 如果用户输入了单个 {，提供 {{}} 模板
+                if (textUntilPosition.endsWith('{') && !textUntilPosition.endsWith('{{')) {
                     return {
                         suggestions: [
                             {
@@ -136,15 +240,135 @@ function MonacoHtmlEditor(props: any, ref: any) {
                                     endLineNumber: position.lineNumber,
                                     startColumn: position.column - 1,
                                     endColumn: position.column
-                                }
+                                },
+                                documentation: '插入变量模板'
                             }
                         ]
                     };
                 }
 
+                // 如果用户输入了 {{，但没有 }}，提供变量列表
+                if (textUntilPosition.endsWith('{{')) {
+                    const suggestions = variables.map((varItem: any) => {
+                        const variableName = varItem.insertText || varItem.label;
+                        // 插入格式：类型:{{变量内容}}concat:{{}}
+                        const insertText = `类型:{{${variableName}}}concat:{{}}`;
+                        
+                        return {
+                            label: varItem.label,
+                            kind: monaco.languages.CompletionItemKind.Variable,
+                            insertText: insertText,
+                            detail: varItem.detail || varItem.label,
+                            documentation: varItem.documentation || varItem.detail || `变量: ${varItem.label}`,
+                            range: {
+                                startLineNumber: position.lineNumber,
+                                endLineNumber: position.lineNumber,
+                                startColumn: position.column - 2, // 包含 {{
+                                endColumn: position.column
+                            }
+                        };
+                    });
+
+                    return { suggestions };
+                }
+
                 return { suggestions: [] };
             },
-            triggerCharacters: ['{']
+            triggerCharacters: ['{', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        });
+
+        // 同时为 plaintext 注册（兼容性）
+        monaco.languages.registerCompletionItemProvider('plaintext', {
+            provideCompletionItems: (model: any, position: any) => {
+                const textUntilPosition = model.getValueInRange({
+                    startLineNumber: 1,
+                    startColumn: 1,
+                    endLineNumber: position.lineNumber,
+                    endColumn: position.column
+                });
+
+                // 检查是否在 {{}} 内
+                const bracketRange = getBracketRange(model, position);
+                if (bracketRange && bracketRange.fullRange) {
+                    const inputContent = bracketRange.content.toLowerCase();
+                    const filteredVariables = variables.filter((varItem: any) => {
+                        const label = varItem.label.toLowerCase();
+                        return label.includes(inputContent);
+                    });
+
+                    const suggestions = filteredVariables.map((varItem: any) => {
+                        const variableName = varItem.insertText || varItem.label;
+                        // 插入格式：类型:{{变量内容}}concat:{{}}
+                        const insertText = `类型:{{${variableName}}}concat:{{}}`;
+                        
+                        return {
+                            label: varItem.label,
+                            kind: monaco.languages.CompletionItemKind.Variable,
+                            insertText: insertText,
+                            detail: varItem.detail || varItem.label,
+                            documentation: varItem.documentation || varItem.detail || `变量: ${varItem.label}`,
+                            range: {
+                                startLineNumber: bracketRange.fullRange!.start.lineNumber,
+                                endLineNumber: bracketRange.fullRange!.end.lineNumber,
+                                startColumn: bracketRange.fullRange!.start.column,
+                                endColumn: bracketRange.fullRange!.end.column
+                            },
+                            sortText: varItem.label.startsWith(inputContent) ? '0' : '1'
+                        };
+                    });
+
+                    return { suggestions };
+                }
+
+                // 如果用户输入了单个 {，提供 {{}} 模板
+                if (textUntilPosition.endsWith('{') && !textUntilPosition.endsWith('{{')) {
+                    return {
+                        suggestions: [
+                            {
+                                label: '{{}}',
+                                kind: monaco.languages.CompletionItemKind.Snippet,
+                                insertText: '{{$1}}',
+                                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                                range: {
+                                    startLineNumber: position.lineNumber,
+                                    endLineNumber: position.lineNumber,
+                                    startColumn: position.column - 1,
+                                    endColumn: position.column
+                                },
+                                documentation: '插入变量模板'
+                            }
+                        ]
+                    };
+                }
+
+                // 如果用户输入了 {{，但没有 }}，提供变量列表
+                if (textUntilPosition.endsWith('{{')) {
+                    const suggestions = variables.map((varItem: any) => {
+                        const variableName = varItem.insertText || varItem.label;
+                        // 插入格式：类型:{{变量内容}}concat:{{}}
+                        const insertText = `类型:{{${variableName}}}concat:{{}}`;
+                        
+                        return {
+                            label: varItem.label,
+                            kind: monaco.languages.CompletionItemKind.Variable,
+                            insertText: insertText,
+                            detail: varItem.detail || varItem.label,
+                            documentation: varItem.documentation || varItem.detail || `变量: ${varItem.label}`,
+                            range: {
+                                startLineNumber: position.lineNumber,
+                                endLineNumber: position.lineNumber,
+                                startColumn: position.column - 2, // 包含 {{
+                                endColumn: position.column
+                            }
+                        };
+                    });
+
+                    return { suggestions };
+                }
+
+                return { suggestions: [] };
+            },
+            triggerCharacters: ['{', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
         });
     };
 
@@ -191,31 +415,6 @@ function MonacoHtmlEditor(props: any, ref: any) {
 
             const inBrackets = checkIfInBrackets(position);
             setIsInBrackets(inBrackets);
-
-            // 如果在括号内，触发自动完成
-            if (inBrackets) {
-                setTimeout(() => {
-                    editorRef.current?.trigger('', 'editor.action.triggerSuggest', {});
-                }, 300);
-            }
-        });
-
-        // 监听内容变化
-        editorRef.current.onDidChangeModelContent(() => {
-            if (!editorRef.current) return;
-
-            const value = editorRef.current.getValue();
-            const newRanges = parseAndHighlight(value);
-            setHighlightedRanges(newRanges);
-            applyHighlights(newRanges);
-
-            // 更新光标位置状态
-            const position = editorRef.current.getPosition();
-            if (position) {
-                const inBrackets = checkIfInBrackets(position);
-                setIsInBrackets(inBrackets);
-                setCursorPosition({ line: position.lineNumber, column: position.column });
-            }
         });
     };
 
@@ -256,14 +455,39 @@ function MonacoHtmlEditor(props: any, ref: any) {
         const initialRanges = parseAndHighlight(editor.getValue());
         applyHighlights(initialRanges);
 
-        // 监听内容变化
+        // 监听内容变化（添加防抖避免频繁调用）
         editor.onDidChangeModelContent(() => {
             const value = editor.getValue();
             setContent(value);
 
-            const newRanges = parseAndHighlight(value);
-            setHighlightedRanges(newRanges);
-            applyHighlights(newRanges);
+            // 清除之前的定时器
+            if (highlightTimeoutRef.current) {
+                clearTimeout(highlightTimeoutRef.current);
+            }
+
+            // 使用防抖来延迟应用高亮，避免频繁调用
+            highlightTimeoutRef.current = setTimeout(() => {
+                const newRanges = parseAndHighlight(value);
+                setHighlightedRanges(newRanges);
+                applyHighlights(newRanges);
+            }, 100);
+
+            // 检查是否刚输入了 {{，如果是则触发补全
+            const position = editor.getPosition();
+            if (position) {
+                const model = editor.getModel();
+                if (model) {
+                    const lineContent = model.getLineContent(position.lineNumber);
+                    const textUntilCursor = lineContent.substring(0, position.column - 1);
+
+                    // 如果刚输入了 {{，延迟触发补全
+                    if (textUntilCursor.endsWith('{{')) {
+                        setTimeout(() => {
+                            editor.trigger('', 'editor.action.triggerSuggest', {});
+                        }, 100);
+                    }
+                }
+            }
         });
 
         // 添加输入建议
@@ -279,6 +503,12 @@ function MonacoHtmlEditor(props: any, ref: any) {
             renderIframe(htmlString)
         }
 
+        // 清理定时器
+        return () => {
+            if (highlightTimeoutRef.current) {
+                clearTimeout(highlightTimeoutRef.current);
+            }
+        };
     }, [])
 
 
