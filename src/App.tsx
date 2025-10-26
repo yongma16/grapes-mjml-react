@@ -13,7 +13,7 @@ import UnlayerPage from "./views/UnlayerPage";
 // import CkeditorPage from "./views/CkeditorPage";
 // import CkeditorRender from "./views/CkeditorRender";
 // import CkeditorClassic from "./views/CkeditorClassic";
-import MonacoHtmlEditor from "./views/MonacoHtmlEditor";
+import MonacoHtmlEditor from "./views/monacoEditor/MonacoHtmlEditor";
 import ReacrDragDemo from "./views/drag-box/index";
 import ColorDemo from "./views/colorDemo";
 import ScrollDemo from "./views/scrollDemo";
@@ -22,7 +22,7 @@ import { sendEmail } from "./service/sendEmailApi";
 import html2canvas from "html2canvas";
 
 function App() {
-  const [editType, setEditType] = useState("VideoCover");
+  const [editType, setEditType] = useState("monaco");
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailNumber, setEmailNumber] = useState("1432448610@qq.com");
   const [emailTitle, setEmailTitle] = useState(editType);

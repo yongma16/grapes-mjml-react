@@ -1,0 +1,15 @@
+          .highlight-green {
+            background-color: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 2px;
+          }
+          .highlight-blue {
+            background-color: rgba(0, 0, 255, 0.2);
+            border: 1px solid #0000ff;
+            border-radius: 2px;
+          }
+          .highlight-red {
+            background-color: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+            border-radius: 2px;
+          }
