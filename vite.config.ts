@@ -11,6 +11,10 @@ export default defineConfig({
       languageWorkers: ['html'],
     }),
   ],
+  optimizeDeps: {
+    include: ['mjml-browser'],
+    force: true,
+  },
   server: {
     port: 3000,
     proxy: {
@@ -25,6 +29,9 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
+    commonjsOptions: {
+      include: [/mjml-browser/, /node_modules/],
+    },
   },
 });
 

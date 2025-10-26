@@ -96,7 +96,9 @@ function App() {
         onTypeChange={setEditType}
       />
 
-      <EditorContainer editType={editType} refs={refs} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <EditorContainer editType={editType} refs={refs} />
+      </div>
     </div>
   );
 }

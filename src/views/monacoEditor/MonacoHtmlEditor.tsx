@@ -24,8 +24,14 @@ const DEFAULT_VARIABLES = [
 
 function MonacoHtmlEditor(props: any, ref: any) {
     const [content, setContent] = useState(localStorage.getItem('html_editor_content') || htmlString)
+    const [splitRatio, setSplitRatio] = useState(() => {
+        const saved = localStorage.getItem('monaco_split_ratio');
+        return saved ? parseFloat(saved) : 50; // 默认 50%
+    });
+    const [isDragging, setIsDragging] = useState(false);
 
     const iframeRef = useRef<HTMLElement | any>(null)
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const options = {
         disableLayerHinting: true
     }
@@ -441,12 +447,18 @@ function MonacoHtmlEditor(props: any, ref: any) {
     }
 
     const onEditorDidMount = (editor: any, monaco: any) => {
-        // 格式化
-        editor.getAction('editor.action.formatDocument').run()
-        console.log('format')
-
         editorRef.current = editor;
         monacoRef.current = monaco;
+
+        // 格式化（需要在编辑器完全初始化后执行）
+        setTimeout(() => {
+            const formatAction = editor.getAction('editor.action.formatDocument');
+            if (formatAction) {
+                formatAction.run().catch((err: any) => {
+                    console.warn('格式化失败:', err);
+                });
+            }
+        }, 100);
 
         // 创建装饰器集合
         decorationsRef.current = editor.createDecorationsCollection();
@@ -512,14 +524,121 @@ function MonacoHtmlEditor(props: any, ref: any) {
     }, [])
 
 
+    // 拖拽优化：使用 requestAnimationFrame 提升性能
+    const rafRef = useRef<number | null>(null);
+
+    // 处理分割条拖拽
+    const handleMouseDown = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isDragging || !containerRef.current) return;
+            
+            const container = containerRef.current;
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            
+            // 限制在 20% 到 80% 之间
+            const newRatio = Math.max(20, Math.min(80, percentage));
+            
+            // 使用 requestAnimationFrame 优化性能，但不要限制太严格
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+            }
+
+            rafRef.current = requestAnimationFrame(() => {
+                setSplitRatio(newRatio);
+                
+                // 更新编辑器布局（使用 debounce）
+                if (editorRef.current) {
+                    editorRef.current.layout();
+                }
+            });
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
+            
+            // 取消待处理的动画帧
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+                rafRef.current = null;
+            }
+            
+            // 保存到 localStorage
+            localStorage.setItem('monaco_split_ratio', splitRatio.toString());
+            
+            // 最终触发布局更新
+            requestAnimationFrame(() => {
+                if (editorRef.current) {
+                    editorRef.current.layout();
+                }
+            });
+        };
+
+        if (isDragging) {
+            document.addEventListener('mousemove', handleMouseMove, { passive: true });
+            document.addEventListener('mouseup', handleMouseUp);
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+            }
+        };
+    }, [isDragging]);
+
+    // 监听窗口大小变化，更新编辑器布局
+    useEffect(() => {
+        const handleResize = () => {
+            if (editorRef.current) {
+                setTimeout(() => {
+                    editorRef.current?.layout();
+                }, 100);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     useImperativeHandle(ref, () => ({
         getHtml: () => content
     }))
 
     // @ts-ignore
     return <>
-        <div style={{ display: 'flex' }} id='monaco_html_id'>
-            <div style={{ flex: 1, textAlign: "left" }}>
+        <div 
+            ref={containerRef}
+            style={{ 
+                display: 'flex', 
+                height: '100%',
+                minHeight: '600px',
+                position: 'relative',
+                '--split-ratio': `${splitRatio}%`
+            } as React.CSSProperties}
+            id='monaco_html_id'
+        >
+            <div style={{ 
+                width: `${splitRatio}%`, 
+                textAlign: "left",
+                display: 'flex',
+                flexDirection: 'column',
+                borderRight: '1px solid #e0e0e0',
+                boxSizing: 'border-box',
+                transition: isDragging ? 'none' : 'width 0.2s ease',
+                flexShrink: 0
+            }}>
                 <MonacoEditor
                     width="100%"
                     height="600"
@@ -530,25 +649,106 @@ function MonacoHtmlEditor(props: any, ref: any) {
                     editorDidMount={onEditorDidMount}
                 />
 
-                <div>
-                    <div style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
+                <div style={{ 
+                    padding: '10px',
+                    borderTop: '1px solid #e0e0e0',
+                    backgroundColor: '#f5f5f5'
+                }}>
+                    <div style={{ fontSize: '12px', color: '#666' }}>
                         检测到 {highlightedRanges.length} 个表达式
-                        {highlightedRanges.map((range, index) => {
-                            const contentSlice = content.slice(range.start + 2, range.end - 2);
-                            return (
-                                <div key={index}>
-                                    [{range.color}]
-                                </div>
-                            );
-                        })}
+                        {highlightedRanges.length > 0 && (
+                            <div style={{ marginTop: '5px', display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                                {highlightedRanges.map((range, index) => {
+                                    const contentSlice = content.slice(range.start + 2, range.end - 2);
+                                    return (
+                                        <span 
+                                            key={index}
+                                            style={{
+                                                padding: '2px 6px',
+                                                backgroundColor: range.color === 'green' ? 'rgba(0, 255, 0, 0.2)' : 
+                                                               range.color === 'blue' ? 'rgba(0, 0, 255, 0.2)' : 
+                                                               'rgba(255, 0, 0, 0.2)',
+                                                borderRadius: '3px',
+                                                fontSize: '11px'
+                                            }}
+                                        >
+                                            {contentSlice}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-            <div style={{ flex: 1 }}>
-                <iframe ref={iframeRef} style={{
-                    width: '100%',
-                    height: '600px'
-                }} />
+            
+            {/* 可拖拽的分割条 */}
+            <div
+                onMouseDown={handleMouseDown}
+                style={{
+                    width: '4px',
+                    cursor: 'col-resize',
+                    backgroundColor: isDragging ? '#1890ff' : '#d0d0d0',
+                    position: 'relative',
+                    transition: isDragging ? 'none' : 'background-color 0.2s',
+                    flexShrink: 0,
+                    zIndex: 10,
+                    userSelect: 'none',
+                    WebkitUserSelect: 'none'
+                }}
+                title="拖拽调整宽度"
+            >
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '20px',
+                    height: '40px',
+                    borderRadius: '2px',
+                    backgroundColor: isDragging ? '#1890ff' : '#e0e0e0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '2px'
+                    }}>
+                        <div style={{ width: '12px', height: '2px', backgroundColor: '#999' }}></div>
+                        <div style={{ width: '12px', height: '2px', backgroundColor: '#999' }}></div>
+                        <div style={{ width: '12px', height: '2px', backgroundColor: '#999' }}></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style={{ 
+                width: `${100 - splitRatio}%`,
+                display: 'flex',
+                flexDirection: 'column',
+                boxSizing: 'border-box',
+                transition: isDragging ? 'none' : 'width 0.2s ease',
+                flexShrink: 0
+            }}>
+                <div style={{
+                    padding: '8px',
+                    backgroundColor: '#f5f5f5',
+                    borderBottom: '1px solid #e0e0e0',
+                    fontSize: '12px',
+                    color: '#666'
+                }}>
+                    预览区域
+                </div>
+                <iframe 
+                    ref={iframeRef} 
+                    style={{
+                        width: '100%',
+                        height: '600px',
+                        border: 'none',
+                        flex: 1
+                    }} 
+                />
             </div>
         </div>
     </>

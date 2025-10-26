@@ -1,12 +1,13 @@
 // @ts-ignore
-// eslint-disable-line
-import mjml2html from '../mjml-browser/lib/index';
-// @ts-ignore
 import type { Editor } from 'grapesjs';
+
+// 导入 mjml-browser (使用 npm 包)
+// @ts-ignore
+import mjml2html from 'mjml-browser';
 
 export const isComponentType = (type: string) => (el: Element) => (el.tagName || '').toLowerCase() === type;
 
-export function  mjmlConvert (mjml: string, fonts: Record<string, string>, opts: Record<string, any> = {}) {
+export function mjmlConvert(mjml: string, fonts: Record<string, string>, opts: Record<string, any> = {}) {
   const options = {
     useMjmlConfigOptions: false,
     mjmlConfigPath: null,
